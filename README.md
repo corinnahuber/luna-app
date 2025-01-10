@@ -47,10 +47,15 @@ Profile Screen:
 Open the app on the Home Screen (current moon phase is displayed)
 
 Navigate to:
+      
       Tracking Screen to add Period details
+      
       Calendar Screen to check their last period dates
+      
       Insights Screen to see how long the current cycle  is
+      
       Profile Screen to manage personal info
+      
       Go back to the Home Screen
 
  
