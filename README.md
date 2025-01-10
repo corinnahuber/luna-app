@@ -23,39 +23,34 @@ The app is for anyone who menstruates, especially those who:
 Bottom Navigation
 
 Home Screen:
-      Shows the current moon phase.
+- Shows the current moon phase
 
 Tracking Screen:
-      Users can add:
-            How heavy their period flow was
-            Any mood changes or symptoms
-            Basal body temperature
+Users can add:
+- How heavy their period flow was
+- Any mood changes or symptoms
+- Basal body temperature
 
 Calendar Screen:
-      Shows past periods and if possible for us to implement predictions for future ones
-      Includes fertile days and ovulation estimates (also only if its possible)
+- Shows past periods and if possible for us to implement predictions for future ones
+- Includes fertile days and ovulation estimates (also only if its possible)
 
 Insights Screen:
-      Shows stats like:
-            Average cycle length
-            Last period start and end dates
+Shows stats like:
+- Average cycle length
+- Last period start and end dates
 
 Profile Screen:
-        Users can add personal info, like their current contraception
+Users can add personal info, like their current contraception
 
 ### User Flow
 Open the app on the Home Screen (current moon phase is displayed)
 
 Navigate to:
-      
-      Tracking Screen to add Period details
-      
-      Calendar Screen to check their last period dates
-      
-      Insights Screen to see how long the current cycle  is
-      
-      Profile Screen to manage personal info
-      
-      Go back to the Home Screen
+- Tracking Screen to add Period details
+- Calendar Screen to check their last period dates
+- Insights Screen to see how long the current cycle  is
+- Profile Screen to manage personal info
+- Go back to the Home Screen
 
  
