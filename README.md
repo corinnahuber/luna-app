@@ -5,6 +5,7 @@ Luna is a period tracker app designed to make menstrual cycle management engagin
 
 ## Team Members
 Corinna Huber
+
 Helene Urban
 
 ## App Concept
