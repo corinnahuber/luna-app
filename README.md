@@ -46,14 +46,19 @@ Shows stats like:
 #### Profile Screen
 Users can add personal info, like their current contraception
 
+![mockups](https://github.com/user-attachments/assets/b0fd8aee-924b-470b-b968-952c65ba5594)
+
+
 ### User Flow
 Open the app on the Home Screen (current moon phase is displayed)
 
 Navigate to:
 - Tracking Screen to add Period details
 - Calendar Screen to check their last period dates
-- Insights Screen to see how long the current cycle  is
+- Insights Screen to see how long the last cycle was
 - Profile Screen to manage personal info
 - Go back to the Home Screen
+
+![userflow](https://github.com/user-attachments/assets/bfda1351-0d68-4b49-8d45-b0eda9bdd674)
 
  
