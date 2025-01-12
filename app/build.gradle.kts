@@ -1,11 +1,13 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+    id("org.jetbrains.kotlin.plugin.serialization") version "1.9.10"
+    id("com.google.devtools.ksp")
 }
 
 android {
     namespace = "at.ac.fhstp.lunaapp"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "at.ac.fhstp.lunaapp"
@@ -50,6 +52,25 @@ android {
 }
 
 dependencies {
+    implementation ("io.github.boguszpawlowski.composecalendar:composecalendar:1.0.0")
+    implementation(libs.androidx.navigation.compose)
+
+    val room_version = "2.6.1"
+    implementation("androidx.room:room-runtime:$room_version")
+    implementation("androidx.room:room-ktx:$room_version")
+    ksp("androidx.room:room-compiler:$room_version")
+
+    // Retrofit
+    val retrofit_version = "2.11.0"
+    implementation("com.squareup.retrofit2:converter-kotlinx-serialization:$retrofit_version")
+    implementation("com.squareup.retrofit2:retrofit:$retrofit_version")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3")
+
+    // Image Picker
+    implementation("com.github.dhaval2404:imagepicker:2.1")
+    implementation("io.coil-kt:coil-compose:2.2.2")
+
+    implementation("com.google.android.material:material:1.9.0")
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
