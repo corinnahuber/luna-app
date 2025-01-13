@@ -6,7 +6,8 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "cycle_table")
 data class CycleEntity(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
-    val symptoms: String,
-    val basalTemperature: Float,
-    val flowIntensity: Int // 1 to 5 hearts
+    val date: String,
+    val symptoms: String? = null,
+    val basalTemperature: Float? = null,
+    val flowIntensity: Int? = null
 )

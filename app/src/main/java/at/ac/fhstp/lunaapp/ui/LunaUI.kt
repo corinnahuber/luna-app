@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
@@ -21,6 +22,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import at.ac.fhstp.lunaapp.R
+import at.ac.fhstp.lunaapp.data.CycleRepository
+import at.ac.fhstp.lunaapp.data.db.CycleDatabase
 import kotlinx.coroutines.launch
 
 @Composable
@@ -29,6 +32,10 @@ fun LunaApp(viewModel: CycleViewModel) {
     val navBackStackEntry = navController.currentBackStackEntryAsState()
     val coroutineScope = rememberCoroutineScope()
     val currentRoute = navBackStackEntry.value?.destination?.route
+
+    val context = LocalContext.current
+    val cycleDao = CycleDatabase.getDatabase(context).cycleDao()
+    val cycleRepository = CycleRepository(cycleDao)
 
     Box(modifier = Modifier.fillMaxSize()) {
         when (currentRoute) {
@@ -48,7 +55,9 @@ fun LunaApp(viewModel: CycleViewModel) {
                 modifier = Modifier
                     .fillMaxSize()
                     .background(Color(0xFFF2EDFF))
-            )
+            ) {
+                AddCycleScreen(cycleRepository = cycleRepository)
+            }
             "insights" -> Box(
                 modifier = Modifier
                     .fillMaxSize()
@@ -60,6 +69,14 @@ fun LunaApp(viewModel: CycleViewModel) {
                 modifier = Modifier.fillMaxSize(),
                 contentScale = ContentScale.Crop
             )
+            "single_cycle_entry/{cycleId}" -> Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(Color(0xFFF2EDFF))
+            ) {
+                val cycleId = navBackStackEntry.value?.arguments?.getString("cycleId")?.toInt() ?: 0
+                SingleCycleEntryScreen(cycleRepository = cycleRepository, cycleId = cycleId)
+            }
         }
 
         Scaffold(
@@ -174,10 +191,14 @@ fun LunaApp(viewModel: CycleViewModel) {
                 modifier = Modifier.padding(innerPadding)
             ) {
                 composable("home") { HomeScreen() }
-                composable("calendar") { CalendarScreen() }
-                composable("add_cycle") { AddCycleScreen() }
+                composable("calendar") { CalendarScreen(viewModel = viewModel, navController = navController) }
+                composable("add_cycle") { AddCycleScreen(cycleRepository = cycleRepository) }
                 composable("insights") { InsightsScreen() }
                 composable("profile") { ProfileScreen() }
+                composable("single_cycle_entry/{cycleId}") { backStackEntry ->
+                    val cycleId = backStackEntry.arguments?.getString("cycleId")?.toInt() ?: 0
+                    SingleCycleEntryScreen(cycleRepository = cycleRepository, cycleId = cycleId)
+                }
             }
         }
     }
