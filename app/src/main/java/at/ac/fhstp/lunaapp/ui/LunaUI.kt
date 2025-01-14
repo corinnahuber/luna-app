@@ -208,7 +208,7 @@ fun LunaApp(cycleViewModel: CycleViewModel, profileViewModel: ProfileViewModel) 
                 composable("home") { HomeScreen() }
                 composable("calendar") { CalendarScreen(viewModel = cycleViewModel, navController = navController) }
                 composable("add_cycle") { AddCycleScreen(cycleRepository = cycleRepository, navController = navController) }
-                composable("insights") { InsightsScreen() }
+                composable("insights") { InsightsScreen(context = context) }
                 composable("profile") { ProfileScreen(navController, profileViewModel) }
                 composable("profile_edit") { ProfileEditScreen(navController, profileViewModel) }
                 composable("single_cycle_entry/{cycleId}") { backStackEntry ->

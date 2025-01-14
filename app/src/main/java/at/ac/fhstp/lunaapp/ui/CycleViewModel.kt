@@ -4,16 +4,33 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import at.ac.fhstp.lunaapp.data.CycleRepository
 import at.ac.fhstp.lunaapp.data.db.CycleEntity
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import java.time.LocalDate
 
 class CycleViewModel(private val repository: CycleRepository) : ViewModel() {
     val allCycles: Flow<List<CycleEntity>> = repository.allCycles.stateIn(
         viewModelScope,
         SharingStarted.Lazily,
         emptyList()
+    )
+
+    val lastCycle: Flow<LocalDate?> = repository.getLastCycleEndDate().stateIn(
+        viewModelScope,
+        SharingStarted.Lazily,
+        null
+    )
+
+    val averageCycleLength: Flow<Int> = repository.getAverageCycleLength().stateIn(
+        viewModelScope,
+        SharingStarted.Lazily,
+        0
+    )
+
+    val nextCycleStart: Flow<LocalDate?> = repository.getNextCycleStart().stateIn(
+        viewModelScope,
+        SharingStarted.Lazily,
+        null
     )
 
     fun insert(cycle: CycleEntity, onInserted: (Long) -> Unit) = viewModelScope.launch {
