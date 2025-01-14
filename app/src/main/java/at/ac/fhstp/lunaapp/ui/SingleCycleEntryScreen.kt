@@ -18,15 +18,22 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import at.ac.fhstp.lunaapp.R
 import at.ac.fhstp.lunaapp.data.CycleRepository
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 @Composable
-fun SingleCycleEntryScreen(cycleRepository: CycleRepository, cycleId: Int) {
+fun SingleCycleEntryScreen(cycleRepository: CycleRepository, cycleId: Int, navController: NavController) {
     val viewModel: CycleViewModel = viewModel(factory = CycleViewModelFactory(cycleRepository))
     val cycle by viewModel.getCycleById(cycleId).collectAsState(initial = null)
+    var showDialog by remember { mutableStateOf(false) }
 
     cycle?.let { cycleData ->
+        val parsedDate = LocalDate.parse(cycleData.date)
+        val formattedDate = parsedDate.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))
+
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -41,7 +48,7 @@ fun SingleCycleEntryScreen(cycleRepository: CycleRepository, cycleId: Int) {
                 contentAlignment = Alignment.Center
             ) {
                 Text(
-                    text = cycleData.date,
+                    text = formattedDate,
                     color = Color.White,
                     fontSize = 24.sp,
                     fontWeight = FontWeight.Bold
@@ -137,7 +144,7 @@ fun SingleCycleEntryScreen(cycleRepository: CycleRepository, cycleId: Int) {
                                     .height(20.dp),
                                 textAlign = TextAlign.Center
                             )
-                            Text(text = " °C", fontSize = 20.sp)
+                            Text(text = " °C", fontSize = 24.sp, fontWeight = FontWeight.Bold)
                         }
 
                         Spacer(modifier = Modifier.height(60.dp))
@@ -179,15 +186,51 @@ fun SingleCycleEntryScreen(cycleRepository: CycleRepository, cycleId: Int) {
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                Icon(
-                    painter = painterResource(id = R.drawable.baseline_edit_24),
-                    contentDescription = "Edit",
-                    modifier = Modifier.size(30.dp)
-                )
-                Icon(
-                    painter = painterResource(id = R.drawable.baseline_delete_24),
-                    contentDescription = "Delete",
-                    modifier = Modifier.size(30.dp)
+                IconButton(
+                    onClick = { navController.navigate("edit_cycle/$cycleId") }
+                ) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.baseline_edit_24),
+                        contentDescription = "Edit",
+                        modifier = Modifier.size(30.dp)
+                    )
+                }
+                IconButton(
+                    onClick = { showDialog = true }
+                ) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.baseline_delete_24),
+                        contentDescription = "Delete",
+                        modifier = Modifier.size(30.dp)
+                    )
+                }
+            }
+            if (showDialog) {
+                AlertDialog(
+                    onDismissRequest = { showDialog = false },
+                    title = { Text("Delete Entry") },
+                    text = { Text("Are you sure you want to delete this entry?") },
+                    confirmButton = {
+                        Button(
+                            onClick = {
+                                viewModel.deleteById(cycleId)
+                                navController.navigate("calendar") {
+                                    popUpTo("single_cycle_entry/{cycleId}") { inclusive = true }
+                                }
+                            },
+                            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF534B62))
+                        ) {
+                            Text("Yes", color = Color.White)
+                        }
+                    },
+                    dismissButton = {
+                        Button(
+                            onClick = { showDialog = false },
+                            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF534B62))
+                            ) {
+                            Text("No", color = Color.White)
+                        }
+                    }
                 )
             }
         }

@@ -52,6 +52,8 @@ android {
 }
 
 dependencies {
+    implementation ("io.coil-kt:coil-compose:2.1.0")
+
     implementation ("io.github.boguszpawlowski.composecalendar:composecalendar:1.0.0")
     implementation(libs.androidx.navigation.compose)
 

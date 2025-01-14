@@ -23,6 +23,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import at.ac.fhstp.lunaapp.R
 import at.ac.fhstp.lunaapp.data.CycleRepository
 import at.ac.fhstp.lunaapp.data.db.CycleEntity
@@ -30,7 +31,7 @@ import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
 @Composable
-fun AddCycleScreen(cycleRepository: CycleRepository) {
+fun AddCycleScreen(cycleRepository: CycleRepository, navController: NavController) {
     val viewModel: CycleViewModel = viewModel(factory = CycleViewModelFactory(cycleRepository))
     var selectedSymptoms by remember { mutableStateOf(listOf<String>()) }
     var basalTemperature by remember { mutableStateOf("") }
@@ -94,21 +95,37 @@ fun AddCycleScreen(cycleRepository: CycleRepository) {
                         contentAlignment = Alignment.Center
                     ) {
                         TextButton(onClick = { expanded = true }) {
-                            Text("My Symptoms are...", color = Color.Black, fontSize = 18.sp, fontWeight = FontWeight.Bold)
+                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                Text("My Symptoms are...", color = Color.Black, fontSize = 18.sp, fontWeight = FontWeight.Bold)
+                                Icon(
+                                    painter = painterResource(id = R.drawable.outline_arrow_drop_down_circle_24),
+                                    contentDescription = null,
+                                    modifier = Modifier.size(24.dp),
+                                    tint = Color.Black
+                                )
+                            }
                         }
                         DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
-                            symptomsList.forEach { symptom ->
-                                DropdownMenuItem(
-                                    onClick = {
-                                        selectedSymptoms = if (selectedSymptoms.contains(symptom)) {
-                                            selectedSymptoms - symptom
-                                        } else {
-                                            selectedSymptoms + symptom
-                                        }
-                                        expanded = false
-                                    },
-                                    text = { Text(symptom) }
-                                )
+                            Box(
+                                modifier = Modifier
+                                    .height(250.dp) // Set fixed height
+                                    .verticalScroll(rememberScrollState())
+                            ) {
+                                Column {
+                                    symptomsList.forEach { symptom ->
+                                        DropdownMenuItem(
+                                            onClick = {
+                                                selectedSymptoms = if (selectedSymptoms.contains(symptom)) {
+                                                    selectedSymptoms - symptom
+                                                } else {
+                                                    selectedSymptoms + symptom
+                                                }
+                                                expanded = false
+                                            },
+                                            text = { Text(symptom) }
+                                        )
+                                    }
+                                }
                             }
                         }
                     }
@@ -168,7 +185,10 @@ fun AddCycleScreen(cycleRepository: CycleRepository) {
                             },
                             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                             visualTransformation = VisualTransformation.None,
-                            textStyle = LocalTextStyle.current.copy(textAlign = TextAlign.Center),
+                            textStyle = LocalTextStyle.current.copy(
+                                textAlign = TextAlign.Center,
+                                fontSize = 20.sp
+                            ),
                             modifier = Modifier
                                 .background(Color.White, RoundedCornerShape(20.dp))
                                 .border(3.dp, Color.Black, RoundedCornerShape(20.dp))
@@ -176,7 +196,7 @@ fun AddCycleScreen(cycleRepository: CycleRepository) {
                                 .width(100.dp)
                                 .height(20.dp)
                         )
-                        Text(text = " °C", fontSize = 20.sp)
+                        Text(text = " °C", fontSize = 24.sp, fontWeight = FontWeight.Bold)
                     }
 
                     Spacer(modifier = Modifier.height(60.dp))
@@ -226,7 +246,9 @@ fun AddCycleScreen(cycleRepository: CycleRepository) {
                     basalTemperature = basalTemperature.toFloatOrNull(),
                     flowIntensity = flowIntensity.takeIf { it > 0 }
                 )
-                viewModel.insert(cycle) {}
+                viewModel.insert(cycle) {
+                    navController.navigate("calendar")
+                }
             },
             colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFC1B0D9))
         ) {
