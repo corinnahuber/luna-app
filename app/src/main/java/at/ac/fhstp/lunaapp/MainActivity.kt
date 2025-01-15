@@ -3,45 +3,32 @@ package at.ac.fhstp.lunaapp
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import at.ac.fhstp.lunaapp.ui.theme.LunaAppTheme
+import androidx.activity.viewModels
+import at.ac.fhstp.lunaapp.data.CycleRepository
+import at.ac.fhstp.lunaapp.data.ProfileRepository
+import at.ac.fhstp.lunaapp.data.db.CycleDatabase
+import at.ac.fhstp.lunaapp.data.db.ProfileDatabase
+import at.ac.fhstp.lunaapp.ui.CycleViewModel
+import at.ac.fhstp.lunaapp.ui.ProfileViewModel
+import at.ac.fhstp.lunaapp.ui.LunaApp
 
 class MainActivity : ComponentActivity() {
+    private val cycleViewModel: CycleViewModel by viewModels {
+        val database = CycleDatabase.getDatabase(this)
+        val repository = CycleRepository(database.cycleDao())
+        CycleViewModel.provideFactory(repository)
+    }
+
+    private val profileViewModel: ProfileViewModel by viewModels {
+        val database = ProfileDatabase.getDatabase(this)
+        val repository = ProfileRepository(database.profileDao())
+        ProfileViewModel.provideFactory(repository)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         setContent {
-            LunaAppTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
-                }
-            }
+            LunaApp(cycleViewModel, profileViewModel)
         }
-    }
-}
-
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    LunaAppTheme {
-        Greeting("Android")
     }
 }
