@@ -39,7 +39,7 @@ fun ProfileScreen(navController: NavController, viewModel: ProfileViewModel) {
             contentAlignment = Alignment.Center
         ) {
             Text(
-                text = "Profil",
+                text = "Profile",
                 color = Color.White,
                 fontSize = 24.sp,
                 fontWeight = FontWeight.Bold
