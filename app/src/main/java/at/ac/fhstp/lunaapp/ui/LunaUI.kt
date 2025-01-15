@@ -26,6 +26,8 @@ import at.ac.fhstp.lunaapp.data.CycleRepository
 import at.ac.fhstp.lunaapp.data.db.CycleDatabase
 import at.ac.fhstp.lunaapp.ui.edit.ProfileEditScreen
 import kotlinx.coroutines.launch
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 @Composable
 fun LunaApp(cycleViewModel: CycleViewModel, profileViewModel: ProfileViewModel) {
@@ -52,12 +54,13 @@ fun LunaApp(cycleViewModel: CycleViewModel, profileViewModel: ProfileViewModel) 
                 modifier = Modifier.fillMaxSize(),
                 contentScale = ContentScale.Crop
             )
-            "add_cycle" -> Box(
+            "add_cycle/{date}" -> Box(
                 modifier = Modifier
                     .fillMaxSize()
                     .background(Color(0xFFF2EDFF))
             ) {
-                AddCycleScreen(cycleRepository = cycleRepository, navController = navController)
+                val date = navBackStackEntry.value?.arguments?.getString("date")
+                AddCycleScreen(cycleRepository = cycleRepository, navController = navController, date = date)
             }
             "insights" -> Box(
                 modifier = Modifier
@@ -181,7 +184,8 @@ fun LunaApp(cycleViewModel: CycleViewModel, profileViewModel: ProfileViewModel) 
                         Spacer(modifier = Modifier.weight(0.05f, true))
                     }
                     FloatingActionButton(
-                        onClick = { navController.navigate("add_cycle") },
+                        onClick = { navController.navigate("add_cycle/${LocalDate.now().format(
+                            DateTimeFormatter.ISO_DATE)}") },
                         shape = CircleShape,
                         modifier = Modifier
                             .size(75.dp)
@@ -207,7 +211,10 @@ fun LunaApp(cycleViewModel: CycleViewModel, profileViewModel: ProfileViewModel) 
             ) {
                 composable("home") { HomeScreen() }
                 composable("calendar") { CalendarScreen(viewModel = cycleViewModel, navController = navController) }
-                composable("add_cycle") { AddCycleScreen(cycleRepository = cycleRepository, navController = navController) }
+                composable("add_cycle/{date}") { backStackEntry ->
+                    val date = backStackEntry.arguments?.getString("date")
+                    AddCycleScreen(cycleRepository = cycleRepository, navController = navController, date = date)
+                }
                 composable("insights") { InsightsScreen(context = context) }
                 composable("profile") { ProfileScreen(navController, profileViewModel) }
                 composable("profile_edit") { ProfileEditScreen(navController, profileViewModel) }

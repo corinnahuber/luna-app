@@ -31,7 +31,7 @@ import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
 @Composable
-fun AddCycleScreen(cycleRepository: CycleRepository, navController: NavController) {
+fun AddCycleScreen(cycleRepository: CycleRepository, navController: NavController, date: String? = null) {
     val viewModel: CycleViewModel = viewModel(factory = CycleViewModelFactory(cycleRepository))
     var selectedSymptoms by remember { mutableStateOf(listOf<String>()) }
     var basalTemperature by remember { mutableStateOf("") }
@@ -42,6 +42,9 @@ fun AddCycleScreen(cycleRepository: CycleRepository, navController: NavControlle
         "Headache", "Hot Flushes", "Lower Back Pain", "Memory Lapse", "Mood Changes", "Nausea",
         "Night Sweats", "Pelvic Pain", "Sleep Changes", "Vaginal Dryness"
     )
+    val formattedDate = date?.let {
+        LocalDate.parse(it, DateTimeFormatter.ISO_DATE).format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))
+    } ?: LocalDate.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))
 
     Column(
         modifier = Modifier
@@ -57,7 +60,7 @@ fun AddCycleScreen(cycleRepository: CycleRepository, navController: NavControlle
             contentAlignment = Alignment.Center
         ) {
             Text(
-                text = "Today's Cycle",
+                text = "Cycle $formattedDate",
                 color = Color.White,
                 fontSize = 24.sp,
                 fontWeight = FontWeight.Bold
@@ -239,9 +242,9 @@ fun AddCycleScreen(cycleRepository: CycleRepository, navController: NavControlle
         // Save Button
         Button(
             onClick = {
-                val date = LocalDate.now().format(DateTimeFormatter.ISO_DATE)
+                val cycleDate = date ?: LocalDate.now().format(DateTimeFormatter.ISO_DATE)
                 val cycle = CycleEntity(
-                    date = date,
+                    date = cycleDate,
                     symptoms = selectedSymptoms.joinToString(", "),
                     basalTemperature = basalTemperature.toFloatOrNull(),
                     flowIntensity = flowIntensity.takeIf { it > 0 }

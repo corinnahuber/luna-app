@@ -81,8 +81,10 @@ fun CalendarScreen(viewModel: CycleViewModel, navController: NavController) {
                                 .border(2.dp, Color.Black, CircleShape)
                                 .background(backgroundColor, CircleShape)
                                 .clickable {
-                                    cycle?.let {
-                                        navController.navigate("single_cycle_entry/${it.id}")
+                                    if (cycle != null) {
+                                        navController.navigate("single_cycle_entry/${cycle.id}")
+                                    } else {
+                                        navController.navigate("add_cycle/${day.date}")
                                     }
                                 },
                             contentAlignment = Alignment.Center
