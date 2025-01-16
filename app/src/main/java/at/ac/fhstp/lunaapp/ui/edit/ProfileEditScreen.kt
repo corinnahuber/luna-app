@@ -19,12 +19,14 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import at.ac.fhstp.lunaapp.R
 import at.ac.fhstp.lunaapp.ui.ProfileViewModel
 import coil.compose.rememberAsyncImagePainter
 
@@ -37,6 +39,7 @@ fun ProfileEditScreen(navController: NavController, viewModel: ProfileViewModel)
     var contraception by remember { mutableStateOf(profile?.contraception ?: "") }
     var imageUri by remember { mutableStateOf<Uri?>(profile?.imageUri?.let { Uri.parse(it) }) }
     val context = LocalContext.current
+    var showDialog by remember { mutableStateOf(false) }
 
     val imagePickerLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetContent()
@@ -121,14 +124,61 @@ fun ProfileEditScreen(navController: NavController, viewModel: ProfileViewModel)
 
         Spacer(modifier = Modifier.height(30.dp))
 
-        Button(
-            onClick = {
-                viewModel.updateProfile(context, name, age, weight, contraception, imageUri)
-                navController.navigateUp()
-            },
-            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF534B62))
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.Center
         ) {
-            Text("Save", color = Color.White, fontSize = 18.sp, fontWeight = FontWeight.Bold)
+            Button(
+                onClick = {
+                    viewModel.updateProfile(context, name, age, weight, contraception, imageUri)
+                    navController.navigateUp()
+                },
+                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF534B62))
+            ) {
+                Text("Save", color = Color.White, fontSize = 18.sp, fontWeight = FontWeight.Bold)
+            }
+
+            Spacer(modifier = Modifier.width(8.dp))
+
+            IconButton(
+                onClick = { showDialog = true }
+            ) {
+                Icon(
+                    painter = painterResource(id = R.drawable.baseline_delete_24),
+                    contentDescription = "Delete",
+                    modifier = Modifier.size(30.dp),
+                    tint = Color(0xFF534B62)
+                )
+            }
+        }
+
+        if (showDialog) {
+            AlertDialog(
+                onDismissRequest = { showDialog = false },
+                title = { Text("Delete Profile") },
+                text = { Text("Are you sure you want to delete this profile?") },
+                confirmButton = {
+                    Button(
+                        onClick = {
+                            viewModel.deleteProfile()
+                            navController.navigate("profile") {
+                                popUpTo("profile_edit_screen") { inclusive = true }
+                            }
+                        },
+                        colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF534B62))
+                    ) {
+                        Text("Yes", color = Color.White)
+                    }
+                },
+                dismissButton = {
+                    Button(
+                        onClick = { showDialog = false },
+                        colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF534B62))
+                    ) {
+                        Text("No", color = Color.White)
+                    }
+                }
+            )
         }
     }
 }

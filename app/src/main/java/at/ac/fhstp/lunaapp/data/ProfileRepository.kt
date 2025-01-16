@@ -15,4 +15,8 @@ class ProfileRepository(private val profileDao: ProfileDao) {
     suspend fun insertProfile(profile: ProfileEntity) {
         profileDao.insert(profile)
     }
+
+    suspend fun deleteProfile(profile: ProfileEntity) {
+        profileDao.delete(profile)
+    }
 }

@@ -1,6 +1,5 @@
 package at.ac.fhstp.lunaapp.ui
 
-import android.graphics.BitmapFactory
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -18,7 +17,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import coil.compose.rememberAsyncImagePainter
 
 @Composable
 fun ProfileScreen(navController: NavController, viewModel: ProfileViewModel) {
@@ -71,13 +69,13 @@ fun ProfileScreen(navController: NavController, viewModel: ProfileViewModel) {
         Spacer(modifier = Modifier.height(60.dp))
 
         Text(text = "Name", fontSize = 18.sp, fontWeight = FontWeight.Bold)
-        Text(text = profile?.name ?: "Name", fontSize = 18.sp, fontWeight = FontWeight.Medium)
+        Text(text = profile?.name ?: "Your Name", fontSize = 18.sp, fontWeight = FontWeight.Medium)
         Spacer(modifier = Modifier.height(20.dp))
         Text(text = "Age", fontSize = 18.sp, fontWeight = FontWeight.Bold)
-        Text(text = profile?.age ?: "Age", fontSize = 18.sp, fontWeight = FontWeight.Medium)
+        Text(text = profile?.age ?: "Your Age", fontSize = 18.sp, fontWeight = FontWeight.Medium)
         Spacer(modifier = Modifier.height(20.dp))
         Text(text = "Weight", fontSize = 18.sp, fontWeight = FontWeight.Bold)
-        Text(text = "${profile?.weight ?: "Weight"} kg", fontSize = 18.sp, fontWeight = FontWeight.Medium)
+        Text(text = "${profile?.weight ?: "Weight in"} kg", fontSize = 18.sp, fontWeight = FontWeight.Medium)
         Spacer(modifier = Modifier.height(20.dp))
         Text(text = "Contraception Method", fontSize = 18.sp, fontWeight = FontWeight.Bold)
         Text(text = profile?.contraception ?: "Contraception", fontSize = 18.sp, fontWeight = FontWeight.Medium)
