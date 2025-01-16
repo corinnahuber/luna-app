@@ -21,6 +21,8 @@ import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
@@ -47,6 +49,10 @@ fun ProfileEditScreen(navController: NavController, viewModel: ProfileViewModel)
         imageUri = uri
     }
 
+    // Load the custom font
+    val customFont = FontFamily(Font(R.font.font01, FontWeight.Normal))
+    val customFont2 = FontFamily(Font(R.font.font06, FontWeight.Normal))
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -64,7 +70,7 @@ fun ProfileEditScreen(navController: NavController, viewModel: ProfileViewModel)
                 text = "Edit Profile",
                 color = Color.White,
                 fontSize = 24.sp,
-                fontWeight = FontWeight.Bold
+                style = TextStyle(fontFamily = customFont)
             )
         }
 
@@ -87,9 +93,9 @@ fun ProfileEditScreen(navController: NavController, viewModel: ProfileViewModel)
                         .size(150.dp)
                         .clip(CircleShape)
                 )
-                Text("Edit", color = Color.White, fontSize = 16.sp, fontWeight = FontWeight.Bold)
+                Text("Edit", color = Color.White, fontSize = 18.sp, style = TextStyle(fontFamily = customFont2), fontWeight = FontWeight.Bold)
             } ?: run {
-                Text("Edit", color = Color.White, fontSize = 16.sp, fontWeight = FontWeight.Bold)
+                Text("Edit", color = Color.White, fontSize = 18.sp, style = TextStyle(fontFamily = customFont2), fontWeight = FontWeight.Bold)
             }
         }
 
@@ -135,7 +141,7 @@ fun ProfileEditScreen(navController: NavController, viewModel: ProfileViewModel)
                 },
                 colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF534B62))
             ) {
-                Text("Save", color = Color.White, fontSize = 18.sp, fontWeight = FontWeight.Bold)
+                Text("Save", color = Color.White, fontSize = 18.sp, style = TextStyle(fontFamily = customFont))
             }
 
             Spacer(modifier = Modifier.width(8.dp))
@@ -191,8 +197,11 @@ fun CustomTextField(
     keyboardType: KeyboardType = KeyboardType.Text,
     suffix: String? = null
 ) {
+    // Load the custom font
+    val customFont2 = FontFamily(Font(R.font.font06, FontWeight.Normal))
+
     Column {
-        Text(text = label, fontSize = 16.sp, fontWeight = FontWeight.Bold)
+        Text(text = label, fontSize = 16.sp, style = TextStyle(fontFamily = customFont2), fontWeight = FontWeight.Bold)
         Spacer(modifier = Modifier.height(4.dp))
         Box(
             modifier = Modifier
@@ -215,6 +224,7 @@ fun CustomTextField(
                     text = it,
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Bold,
+                    style = TextStyle(fontFamily = customFont2),
                     modifier = Modifier
                         .align(Alignment.CenterEnd)
                         .padding(end = 8.dp)

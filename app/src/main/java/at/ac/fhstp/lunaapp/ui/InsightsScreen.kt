@@ -11,11 +11,15 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import at.ac.fhstp.lunaapp.R
 import at.ac.fhstp.lunaapp.data.CycleRepository
 import at.ac.fhstp.lunaapp.data.db.CycleDatabase
 import java.time.LocalDate
@@ -28,6 +32,10 @@ fun InsightsScreen(context: Context, viewModel: CycleViewModel = viewModel(facto
     val nextCycleStart by viewModel.nextCycleStart.collectAsState(initial = null)
 
     val dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
+
+    // Load the custom font
+    val customFont = FontFamily(Font(R.font.font01, FontWeight.Normal))
+    val customFont2 = FontFamily(Font(R.font.font06, FontWeight.Normal))
 
     Column(
         modifier = Modifier
@@ -46,7 +54,7 @@ fun InsightsScreen(context: Context, viewModel: CycleViewModel = viewModel(facto
                 text = "Insights",
                 color = Color.White,
                 fontSize = 24.sp,
-                fontWeight = FontWeight.Bold
+                style = TextStyle(fontFamily = customFont)
             )
         }
 
@@ -64,7 +72,7 @@ fun InsightsScreen(context: Context, viewModel: CycleViewModel = viewModel(facto
                 text = "Last Cycle",
                 color = Color.Black,
                 fontSize = 18.sp,
-                fontWeight = FontWeight.Bold
+                style = TextStyle(fontFamily = customFont2)
             )
         }
         Spacer(modifier = Modifier.height(14.dp))
@@ -74,7 +82,7 @@ fun InsightsScreen(context: Context, viewModel: CycleViewModel = viewModel(facto
                 text = "Start: ${lastCycleEndDate?.format(dateFormatter) ?: "Sorry, we don't have enough data yet"}",
                 color = Color.Black,
                 fontSize = 16.sp,
-                fontWeight = FontWeight.Medium,
+                style = TextStyle(fontFamily = customFont2),
                 textAlign = TextAlign.Start
             )
         }
@@ -85,7 +93,7 @@ fun InsightsScreen(context: Context, viewModel: CycleViewModel = viewModel(facto
                 text = "End: ${lastCycleEndDate?.plusDays(averageCycleLength.toLong())?.format(dateFormatter) ?: "Sorry, we don't have enough data yet"}",
                 color = Color.Black,
                 fontSize = 16.sp,
-                fontWeight = FontWeight.Medium,
+                style = TextStyle(fontFamily = customFont2),
                 textAlign = TextAlign.Start
             )
         }
@@ -104,7 +112,7 @@ fun InsightsScreen(context: Context, viewModel: CycleViewModel = viewModel(facto
                 text = "Next Cycle",
                 color = Color.Black,
                 fontSize = 18.sp,
-                fontWeight = FontWeight.Bold
+                style = TextStyle(fontFamily = customFont2)
             )
         }
         Spacer(modifier = Modifier.height(14.dp))
@@ -114,7 +122,7 @@ fun InsightsScreen(context: Context, viewModel: CycleViewModel = viewModel(facto
                 text = "Start: ${nextCycleStart?.format(dateFormatter) ?: "Sorry, we don't have enough data yet"}",
                 color = Color.Black,
                 fontSize = 16.sp,
-                fontWeight = FontWeight.Medium,
+                style = TextStyle(fontFamily = customFont2),
                 textAlign = TextAlign.Start
             )
         }
@@ -125,7 +133,7 @@ fun InsightsScreen(context: Context, viewModel: CycleViewModel = viewModel(facto
                 text = "End: ${nextCycleStart?.plusDays(averageCycleLength.toLong())?.format(dateFormatter) ?: "Sorry, we don't have enough data yet"}",
                 color = Color.Black,
                 fontSize = 16.sp,
-                fontWeight = FontWeight.Medium,
+                style = TextStyle(fontFamily = customFont2),
                 textAlign = TextAlign.Start
             )
         }
@@ -144,7 +152,7 @@ fun InsightsScreen(context: Context, viewModel: CycleViewModel = viewModel(facto
                 text = "Average Cycle Length",
                 color = Color.Black,
                 fontSize = 18.sp,
-                fontWeight = FontWeight.Bold
+                style = TextStyle(fontFamily = customFont2)
             )
         }
         Spacer(modifier = Modifier.height(14.dp))
@@ -154,7 +162,7 @@ fun InsightsScreen(context: Context, viewModel: CycleViewModel = viewModel(facto
                 text = if (averageCycleLength > 0) "$averageCycleLength days" else "Sorry, we don't have enough data yet",
                 color = Color.Black,
                 fontSize = 16.sp,
-                fontWeight = FontWeight.Medium,
+                style = TextStyle(fontFamily = customFont2),
                 textAlign = TextAlign.Start
             )
         }

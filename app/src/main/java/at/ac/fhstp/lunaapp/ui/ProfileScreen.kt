@@ -13,15 +13,23 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import at.ac.fhstp.lunaapp.R
 
 @Composable
 fun ProfileScreen(navController: NavController, viewModel: ProfileViewModel) {
     val profile by viewModel.profile.collectAsState()
     val context = LocalContext.current
+
+    // Load the custom font
+    val customFont = FontFamily(Font(R.font.font01, FontWeight.Normal))
+    val customFont2 = FontFamily(Font(R.font.font06, FontWeight.Normal))
 
     Column(
         modifier = Modifier
@@ -40,7 +48,7 @@ fun ProfileScreen(navController: NavController, viewModel: ProfileViewModel) {
                 text = "Profile",
                 color = Color.White,
                 fontSize = 24.sp,
-                fontWeight = FontWeight.Bold
+                style = TextStyle(fontFamily = customFont)
             )
         }
 
@@ -68,17 +76,17 @@ fun ProfileScreen(navController: NavController, viewModel: ProfileViewModel) {
 
         Spacer(modifier = Modifier.height(60.dp))
 
-        Text(text = "Name", fontSize = 18.sp, fontWeight = FontWeight.Bold)
-        Text(text = profile?.name ?: "Your Name", fontSize = 18.sp, fontWeight = FontWeight.Medium)
+        Text(text = "Name", fontSize = 18.sp, style = TextStyle(fontFamily = customFont2), fontWeight = FontWeight.Bold)
+        Text(text = profile?.name ?: "Your Name", fontSize = 18.sp, style = TextStyle(fontFamily = customFont2))
         Spacer(modifier = Modifier.height(20.dp))
-        Text(text = "Age", fontSize = 18.sp, fontWeight = FontWeight.Bold)
-        Text(text = profile?.age ?: "Your Age", fontSize = 18.sp, fontWeight = FontWeight.Medium)
+        Text(text = "Age", fontSize = 18.sp, style = TextStyle(fontFamily = customFont2), fontWeight = FontWeight.Bold)
+        Text(text = profile?.age ?: "Your Age", fontSize = 18.sp, style = TextStyle(fontFamily = customFont2))
         Spacer(modifier = Modifier.height(20.dp))
-        Text(text = "Weight", fontSize = 18.sp, fontWeight = FontWeight.Bold)
-        Text(text = "${profile?.weight ?: "Weight in"} kg", fontSize = 18.sp, fontWeight = FontWeight.Medium)
+        Text(text = "Weight", fontSize = 18.sp, style = TextStyle(fontFamily = customFont2), fontWeight = FontWeight.Bold)
+        Text(text = "${profile?.weight ?: "Weight in"} kg", fontSize = 18.sp, style = TextStyle(fontFamily = customFont2))
         Spacer(modifier = Modifier.height(20.dp))
-        Text(text = "Contraception Method", fontSize = 18.sp, fontWeight = FontWeight.Bold)
-        Text(text = profile?.contraception ?: "Contraception", fontSize = 18.sp, fontWeight = FontWeight.Medium)
+        Text(text = "Contraception Method", fontSize = 18.sp, style = TextStyle(fontFamily = customFont2), fontWeight = FontWeight.Bold)
+        Text(text = profile?.contraception ?: "Contraception", fontSize = 18.sp, style = TextStyle(fontFamily = customFont2))
 
         Spacer(modifier = Modifier.height(60.dp))
 
@@ -86,7 +94,7 @@ fun ProfileScreen(navController: NavController, viewModel: ProfileViewModel) {
             onClick = { navController.navigate("profile_edit") },
             colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF534B62))
         ) {
-            Text("Edit Profile", color = Color.White, fontSize = 18.sp, fontWeight = FontWeight.Bold)
+            Text("Edit Profile", color = Color.White, fontSize = 18.sp, style = TextStyle(fontFamily = customFont))
         }
     }
 }

@@ -1,4 +1,4 @@
-package at.ac.fhstp.lunaapp.ui
+package at.ac.fhstp.lunaapp.ui.edit
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -14,6 +14,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.VisualTransformation
@@ -25,7 +28,8 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import at.ac.fhstp.lunaapp.R
 import at.ac.fhstp.lunaapp.data.CycleRepository
-import at.ac.fhstp.lunaapp.data.db.CycleEntity
+import at.ac.fhstp.lunaapp.ui.CycleViewModel
+import at.ac.fhstp.lunaapp.ui.CycleViewModelFactory
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
@@ -43,6 +47,10 @@ fun CycleEditScreen(cycleRepository: CycleRepository, cycleId: Int, navControlle
         "Headache", "Hot Flushes", "Lower Back Pain", "Memory Lapse", "Mood Changes", "Nausea",
         "Night Sweats", "Pelvic Pain", "Sleep Changes", "Vaginal Dryness"
     )
+
+    // Load the custom font
+    val customFont = FontFamily(Font(R.font.font01, FontWeight.Normal))
+    val customFont2 = FontFamily(Font(R.font.font06, FontWeight.Normal))
 
     LaunchedEffect(cycle) {
         cycle?.let { cycleData ->
@@ -73,7 +81,7 @@ fun CycleEditScreen(cycleRepository: CycleRepository, cycleId: Int, navControlle
                     text = "Edit $formattedDate",
                     color = Color.White,
                     fontSize = 24.sp,
-                    fontWeight = FontWeight.Bold
+                    style = TextStyle(fontFamily = customFont)
                 )
             }
 
@@ -109,7 +117,7 @@ fun CycleEditScreen(cycleRepository: CycleRepository, cycleId: Int, navControlle
                         ) {
                             TextButton(onClick = { expanded = true }) {
                                 Row(verticalAlignment = Alignment.CenterVertically) {
-                                    Text("My Symptoms are...", color = Color.Black, fontSize = 18.sp, fontWeight = FontWeight.Bold)
+                                    Text("My Symptoms are...", color = Color.Black, fontSize = 18.sp, style = TextStyle(fontFamily = customFont2))
                                     Icon(
                                         painter = painterResource(id = R.drawable.outline_arrow_drop_down_circle_24),
                                         contentDescription = null,
@@ -204,7 +212,7 @@ fun CycleEditScreen(cycleRepository: CycleRepository, cycleId: Int, navControlle
                                 .padding(8.dp),
                             contentAlignment = Alignment.Center
                         ) {
-                            Text("My Basal Temperature is...", color = Color.Black, fontSize = 18.sp, fontWeight = FontWeight.Bold)
+                            Text("My Basal Temperature is...", color = Color.Black, fontSize = 18.sp, style = TextStyle(fontFamily = customFont2))
                         }
                         Spacer(modifier = Modifier.height(8.dp))
                         Row(verticalAlignment = Alignment.CenterVertically) {
@@ -241,7 +249,7 @@ fun CycleEditScreen(cycleRepository: CycleRepository, cycleId: Int, navControlle
                                 .padding(8.dp),
                             contentAlignment = Alignment.Center
                         ) {
-                            Text("My Flow is...", color = Color.Black, fontSize = 18.sp, fontWeight = FontWeight.Bold)
+                            Text("My Flow is...", color = Color.Black, fontSize = 18.sp, style = TextStyle(fontFamily = customFont2))
                         }
                         Spacer(modifier = Modifier.height(8.dp))
                         Row {
@@ -279,7 +287,7 @@ fun CycleEditScreen(cycleRepository: CycleRepository, cycleId: Int, navControlle
                 },
                 colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFC1B0D9))
             ) {
-                Text("Save", color = Color.Black, fontSize = 18.sp, fontWeight = FontWeight.Bold)
+                Text("Save", color = Color.Black, fontSize = 18.sp, style = TextStyle(fontFamily = customFont))
             }
         }
     }

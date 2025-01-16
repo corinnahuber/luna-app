@@ -26,12 +26,19 @@ import android.util.Log
 import java.time.ZoneId
 import kotlinx.coroutines.launch
 import kotlinx.datetime.daysUntil
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.TextStyle
 
 @Composable
 fun HomeScreen() {
     val currentDate = LocalDate.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))
     var moonPhase by remember { mutableStateOf("Loading...") }
     val coroutineScope = rememberCoroutineScope()
+
+    // Load the custom font
+    val customFont = FontFamily(Font(R.font.font05, FontWeight.Normal))
 
     LaunchedEffect(Unit) {
         coroutineScope.launch {
@@ -79,7 +86,8 @@ fun HomeScreen() {
                         Text(
                             text = "$currentDate, $moonPhase",
                             fontSize = 20.sp,
-                            color = Color.White
+                            color = Color.White,
+                            style = TextStyle(fontFamily = customFont)
                         )
                     }
                 }

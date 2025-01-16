@@ -15,6 +15,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.VisualTransformation
@@ -46,6 +49,10 @@ fun AddCycleScreen(cycleRepository: CycleRepository, navController: NavControlle
         LocalDate.parse(it, DateTimeFormatter.ISO_DATE).format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))
     } ?: LocalDate.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))
 
+    // Load the custom font
+    val customFont = FontFamily(Font(R.font.font01, FontWeight.Normal))
+    val customFont2 = FontFamily(Font(R.font.font06, FontWeight.Normal))
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -62,8 +69,8 @@ fun AddCycleScreen(cycleRepository: CycleRepository, navController: NavControlle
             Text(
                 text = "Cycle $formattedDate",
                 color = Color.White,
-                fontSize = 24.sp,
-                fontWeight = FontWeight.Bold
+                fontSize = 26.sp,
+                style = TextStyle(fontFamily = customFont)
             )
         }
 
@@ -99,7 +106,7 @@ fun AddCycleScreen(cycleRepository: CycleRepository, navController: NavControlle
                     ) {
                         TextButton(onClick = { expanded = true }) {
                             Row(verticalAlignment = Alignment.CenterVertically) {
-                                Text("My Symptoms are...", color = Color.Black, fontSize = 18.sp, fontWeight = FontWeight.Bold)
+                                Text("My Symptoms are...", color = Color.Black, fontSize = 18.sp, style = TextStyle(fontFamily = customFont2))
                                 Icon(
                                     painter = painterResource(id = R.drawable.outline_arrow_drop_down_circle_24),
                                     contentDescription = null,
@@ -176,7 +183,7 @@ fun AddCycleScreen(cycleRepository: CycleRepository, navController: NavControlle
                             .padding(8.dp),
                         contentAlignment = Alignment.Center
                     ) {
-                        Text("My Basal Temperature is...", color = Color.Black, fontSize = 18.sp, fontWeight = FontWeight.Bold)
+                        Text("My Basal Temperature is...", color = Color.Black, fontSize = 18.sp, style = TextStyle(fontFamily = customFont2))
                     }
                     Spacer(modifier = Modifier.height(8.dp))
                     Row(verticalAlignment = Alignment.CenterVertically) {
@@ -213,7 +220,7 @@ fun AddCycleScreen(cycleRepository: CycleRepository, navController: NavControlle
                             .padding(8.dp),
                         contentAlignment = Alignment.Center
                     ) {
-                        Text("My Flow is...", color = Color.Black, fontSize = 18.sp, fontWeight = FontWeight.Bold)
+                        Text("My Flow is...", color = Color.Black, fontSize = 18.sp, style = TextStyle(fontFamily = customFont2))
                     }
                     Spacer(modifier = Modifier.height(8.dp))
                     Row {
@@ -255,7 +262,7 @@ fun AddCycleScreen(cycleRepository: CycleRepository, navController: NavControlle
             },
             colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFC1B0D9))
         ) {
-            Text("Save", color = Color.Black, fontSize = 18.sp, fontWeight = FontWeight.Bold)
+            Text("Save", color = Color.Black, fontSize = 18.sp, style = TextStyle(fontFamily = customFont))
         }
     }
 }
