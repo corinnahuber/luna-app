@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.sqlite.db.SupportSQLiteDatabase
 
 @Database(entities = [CycleEntity::class], version = 1)
 abstract class CycleDatabase : RoomDatabase() {
@@ -19,7 +20,14 @@ abstract class CycleDatabase : RoomDatabase() {
                     context.applicationContext,
                     CycleDatabase::class.java,
                     "cycle_database"
-                ).build()
+                )
+                    .addCallback(object : RoomDatabase.Callback() {
+                        override fun onOpen(db: SupportSQLiteDatabase) {
+                            super.onOpen(db)
+                            db.setForeignKeyConstraintsEnabled(true)
+                        }
+                    })
+                    .build()
                 INSTANCE = instance
                 instance
             }

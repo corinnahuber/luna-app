@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import at.ac.fhstp.lunaapp.data.ProfileRepository
@@ -49,6 +50,16 @@ class ProfileViewModel(private val profileRepository: ProfileRepository) : ViewM
                 profileRepository.updateProfile(updatedProfile)
             }
             _profile.value = updatedProfile
+        }
+    }
+
+    fun deleteProfile() {
+        viewModelScope.launch {
+            profile.value?.let {
+                Log.d("ProfileViewModel", "Deleting profile: $it")
+                profileRepository.deleteProfile(it)
+                _profile.value = null
+            }
         }
     }
 
