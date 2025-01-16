@@ -71,7 +71,7 @@ fun InsightsScreen(context: Context, viewModel: CycleViewModel = viewModel(facto
         Row(modifier = Modifier.fillMaxWidth()) {
             Spacer(modifier = Modifier.width(40.dp))
             Text(
-                text = "Start: ${lastCycleEndDate?.format(dateFormatter) ?: "N/A"}",
+                text = "Start: ${lastCycleEndDate?.format(dateFormatter) ?: "Sorry, we don't have enough data yet"}",
                 color = Color.Black,
                 fontSize = 16.sp,
                 fontWeight = FontWeight.Medium,
@@ -82,7 +82,7 @@ fun InsightsScreen(context: Context, viewModel: CycleViewModel = viewModel(facto
         Row(modifier = Modifier.fillMaxWidth()) {
             Spacer(modifier = Modifier.width(40.dp))
             Text(
-                text = "End: ${lastCycleEndDate?.plusDays(averageCycleLength.toLong())?.format(dateFormatter) ?: "N/A"}",
+                text = "End: ${lastCycleEndDate?.plusDays(averageCycleLength.toLong())?.format(dateFormatter) ?: "Sorry, we don't have enough data yet"}",
                 color = Color.Black,
                 fontSize = 16.sp,
                 fontWeight = FontWeight.Medium,
@@ -111,7 +111,7 @@ fun InsightsScreen(context: Context, viewModel: CycleViewModel = viewModel(facto
         Row(modifier = Modifier.fillMaxWidth()) {
             Spacer(modifier = Modifier.width(40.dp))
             Text(
-                text = "Start: ${nextCycleStart?.format(dateFormatter) ?: "N/A"}",
+                text = "Start: ${nextCycleStart?.format(dateFormatter) ?: "Sorry, we don't have enough data yet"}",
                 color = Color.Black,
                 fontSize = 16.sp,
                 fontWeight = FontWeight.Medium,
@@ -122,7 +122,7 @@ fun InsightsScreen(context: Context, viewModel: CycleViewModel = viewModel(facto
         Row(modifier = Modifier.fillMaxWidth()) {
             Spacer(modifier = Modifier.width(40.dp))
             Text(
-                text = "End: ${nextCycleStart?.plusDays(averageCycleLength.toLong())?.format(dateFormatter) ?: "N/A"}",
+                text = "End: ${nextCycleStart?.plusDays(averageCycleLength.toLong())?.format(dateFormatter) ?: "Sorry, we don't have enough data yet"}",
                 color = Color.Black,
                 fontSize = 16.sp,
                 fontWeight = FontWeight.Medium,
@@ -151,7 +151,7 @@ fun InsightsScreen(context: Context, viewModel: CycleViewModel = viewModel(facto
         Row(modifier = Modifier.fillMaxWidth()) {
             Spacer(modifier = Modifier.width(40.dp))
             Text(
-                text = "$averageCycleLength days",
+                text = if (averageCycleLength > 0) "$averageCycleLength days" else "Sorry, we don't have enough data yet",
                 color = Color.Black,
                 fontSize = 16.sp,
                 fontWeight = FontWeight.Medium,

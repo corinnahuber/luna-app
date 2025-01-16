@@ -52,6 +52,9 @@ android {
 }
 
 dependencies {
+    implementation("dev.jamesyox:kastro:0.3.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.4.0")
+
     implementation ("io.coil-kt:coil-compose:2.1.0")
 
     implementation ("io.github.boguszpawlowski.composecalendar:composecalendar:1.0.0")
