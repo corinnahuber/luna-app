@@ -171,11 +171,11 @@ fun getPhaseFromAngle(angle: Double): String {
     return when {
         angle < 45.0 -> "New Moon"
         angle < 90.0 -> "Waxing Crescent"
-        angle == 90.0 -> "First Quarter"
-        angle < 135.0 -> "Waxing Gibbous"
-        angle == 180.0 -> "Full Moon"
-        angle < 225.0 -> "Waning Gibbous"
-        angle == 270.0 -> "Last Quarter"
+        angle < 135.0 -> "First Quarter"
+        angle < 180.0 -> "Waxing Gibbous"
+        angle < 225.0 -> "Full Moon"
+        angle < 270.0 -> "Waning Gibbous"
+        angle < 315.0 -> "Last Quarter"
         else -> "Waning Crescent"
     }
 }
