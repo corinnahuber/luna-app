@@ -2,7 +2,6 @@ package at.ac.fhstp.lunaapp.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import at.ac.fhstp.lunaapp.data.ApiClient
 import at.ac.fhstp.lunaapp.data.MoonPhaseResponse
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
