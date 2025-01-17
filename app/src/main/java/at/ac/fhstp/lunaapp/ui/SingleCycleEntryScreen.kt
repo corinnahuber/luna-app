@@ -12,6 +12,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -34,6 +37,10 @@ fun SingleCycleEntryScreen(cycleRepository: CycleRepository, cycleId: Int, navCo
         val parsedDate = LocalDate.parse(cycleData.date)
         val formattedDate = parsedDate.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))
 
+        // Load the custom font
+        val customFont = FontFamily(Font(R.font.font01, FontWeight.Normal))
+        val customFont2 = FontFamily(Font(R.font.font06, FontWeight.Normal))
+
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -51,7 +58,7 @@ fun SingleCycleEntryScreen(cycleRepository: CycleRepository, cycleId: Int, navCo
                     text = formattedDate,
                     color = Color.White,
                     fontSize = 24.sp,
-                    fontWeight = FontWeight.Bold
+                    style = TextStyle(fontFamily = customFont)
                 )
             }
 
@@ -84,7 +91,7 @@ fun SingleCycleEntryScreen(cycleRepository: CycleRepository, cycleId: Int, navCo
                                 .padding(8.dp),
                             contentAlignment = Alignment.Center
                         ) {
-                            Text("My Symptoms are...", color = Color.Black, fontSize = 18.sp, fontWeight = FontWeight.Bold)
+                            Text("My Symptoms are...", color = Color.Black, fontSize = 18.sp, style = TextStyle(fontFamily = customFont2))
                         }
 
                         Spacer(modifier = Modifier.height(8.dp))
@@ -129,7 +136,7 @@ fun SingleCycleEntryScreen(cycleRepository: CycleRepository, cycleId: Int, navCo
                                 .padding(8.dp),
                             contentAlignment = Alignment.Center
                         ) {
-                            Text("My Basal Temperature is...", color = Color.Black, fontSize = 18.sp, fontWeight = FontWeight.Bold)
+                            Text("My Basal Temperature is...", color = Color.Black, fontSize = 18.sp, style = TextStyle(fontFamily = customFont2))
                         }
                         Spacer(modifier = Modifier.height(8.dp))
                         Row(verticalAlignment = Alignment.CenterVertically) {
@@ -158,7 +165,7 @@ fun SingleCycleEntryScreen(cycleRepository: CycleRepository, cycleId: Int, navCo
                                 .padding(8.dp),
                             contentAlignment = Alignment.Center
                         ) {
-                            Text("My Flow is...", color = Color.Black, fontSize = 18.sp, fontWeight = FontWeight.Bold)
+                            Text("My Flow is...", color = Color.Black, fontSize = 18.sp, style = TextStyle(fontFamily = customFont2))
                         }
                         Spacer(modifier = Modifier.height(8.dp))
                         Row {

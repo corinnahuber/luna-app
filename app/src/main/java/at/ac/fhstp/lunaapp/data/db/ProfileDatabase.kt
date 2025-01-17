@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.sqlite.db.SupportSQLiteDatabase
 
 @Database(entities = [ProfileEntity::class], version = 1)
 abstract class ProfileDatabase : RoomDatabase() {
@@ -19,7 +20,14 @@ abstract class ProfileDatabase : RoomDatabase() {
                     context.applicationContext,
                     ProfileDatabase::class.java,
                     "profile_database"
-                ).build()
+                )
+                    .addCallback(object : RoomDatabase.Callback() {
+                        override fun onOpen(db: SupportSQLiteDatabase) {
+                            super.onOpen(db)
+                            db.setForeignKeyConstraintsEnabled(true)
+                        }
+                    })
+                    .build()
                 INSTANCE = instance
                 instance
             }

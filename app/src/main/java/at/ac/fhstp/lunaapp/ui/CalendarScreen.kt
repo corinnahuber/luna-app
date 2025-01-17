@@ -13,10 +13,14 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import at.ac.fhstp.lunaapp.R
 import io.github.boguszpawlowski.composecalendar.Calendar
 import io.github.boguszpawlowski.composecalendar.rememberCalendarState
 import java.time.DayOfWeek
@@ -24,6 +28,9 @@ import java.time.DayOfWeek
 @Composable
 fun CalendarScreen(viewModel: CycleViewModel, navController: NavController) {
     val allCycles by viewModel.allCycles.collectAsState(initial = emptyList())
+
+    // Load the custom font
+    val customFont = FontFamily(Font(R.font.font01, FontWeight.Normal))
 
     Column(
         modifier = Modifier
@@ -42,7 +49,7 @@ fun CalendarScreen(viewModel: CycleViewModel, navController: NavController) {
                 text = "Calendar",
                 color = Color.White,
                 fontSize = 24.sp,
-                fontWeight = FontWeight.Bold
+                style = TextStyle(fontFamily = customFont)
             )
         }
 
@@ -81,8 +88,10 @@ fun CalendarScreen(viewModel: CycleViewModel, navController: NavController) {
                                 .border(2.dp, Color.Black, CircleShape)
                                 .background(backgroundColor, CircleShape)
                                 .clickable {
-                                    cycle?.let {
-                                        navController.navigate("single_cycle_entry/${it.id}")
+                                    if (cycle != null) {
+                                        navController.navigate("single_cycle_entry/${cycle.id}")
+                                    } else {
+                                        navController.navigate("add_cycle/${day.date}")
                                     }
                                 },
                             contentAlignment = Alignment.Center
