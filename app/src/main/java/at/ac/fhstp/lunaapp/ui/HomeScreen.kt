@@ -23,6 +23,8 @@ import kotlinx.datetime.toLocalDateTime
 import kotlinx.datetime.toKotlinInstant
 import kotlinx.datetime.toKotlinLocalDate
 import android.util.Log
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import java.time.ZoneId
 import kotlinx.coroutines.launch
 import kotlinx.datetime.daysUntil
@@ -53,7 +55,9 @@ fun HomeScreen() {
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier
+                .fillMaxSize()
+                .verticalScroll(rememberScrollState()),
         ) {
             Spacer(modifier = Modifier.height(70.dp))
 
