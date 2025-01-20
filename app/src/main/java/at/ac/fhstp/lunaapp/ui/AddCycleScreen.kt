@@ -118,7 +118,7 @@ fun AddCycleScreen(cycleRepository: CycleRepository, navController: NavControlle
                         DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
                             Box(
                                 modifier = Modifier
-                                    .height(250.dp) // Set fixed height
+                                    .height(250.dp) // Set fixed height of the dropdown
                                     .verticalScroll(rememberScrollState())
                             ) {
                                 Column {

@@ -35,6 +35,7 @@ class CycleRepository(private val cycleDao: CycleDao) {
         }
     }
 
+    // Retrieves the end date of the last cycle with flow intensity
     fun getLastCycleEndDate(): Flow<LocalDate?> {
         return allCycles.map { cycles ->
             val monthlyCycles = cycles
@@ -49,6 +50,7 @@ class CycleRepository(private val cycleDao: CycleDao) {
         }
     }
 
+    // Calculates the average cycle length in days
     fun getAverageCycleLength(): Flow<Int> {
         return allCycles.map { cycles ->
             val monthlyCycles = cycles
@@ -58,20 +60,24 @@ class CycleRepository(private val cycleDao: CycleDao) {
                 .filterNotNull()
                 .sortedBy { LocalDate.parse(it.date) }
 
+            // If there are less than 2 cycles, return 0
             if (monthlyCycles.size < 2) {
                 return@map 0
             }
 
+            // Calculate the lengths between consecutive cycles
             val lengths = monthlyCycles.zipWithNext { a, b ->
                 val length = ChronoUnit.DAYS.between(LocalDate.parse(a.date), LocalDate.parse(b.date)).toInt()
                 length
             }
 
+            // Calculate the average length of the cycles
             val averageLength = lengths.filter { it > 0 }.average().toInt()
             averageLength
         }
     }
 
+    // Calculates the start date of the next cycle
     fun getNextCycleStart(): Flow<LocalDate?> {
         return flow {
             val lastCycleDate = getLastCycleEndDate().first()

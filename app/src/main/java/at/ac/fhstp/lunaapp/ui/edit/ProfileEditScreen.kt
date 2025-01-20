@@ -34,6 +34,7 @@ import coil.compose.rememberAsyncImagePainter
 
 @Composable
 fun ProfileEditScreen(navController: NavController, viewModel: ProfileViewModel) {
+    // Collect the profile data from the ViewModel
     val profile by viewModel.profile.collectAsState()
     var name by remember { mutableStateOf(profile?.name ?: "") }
     var age by remember { mutableStateOf(profile?.age ?: "") }
@@ -43,6 +44,7 @@ fun ProfileEditScreen(navController: NavController, viewModel: ProfileViewModel)
     val context = LocalContext.current
     var showDialog by remember { mutableStateOf(false) }
 
+    // Launcher for picking an image from the gallery
     val imagePickerLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetContent()
     ) { uri: Uri? ->
@@ -101,6 +103,7 @@ fun ProfileEditScreen(navController: NavController, viewModel: ProfileViewModel)
 
         Spacer(modifier = Modifier.height(60.dp))
 
+        // Custom text fields for entering the profile details
         CustomTextField(
             value = name,
             onValueChange = { name = it },
@@ -136,7 +139,9 @@ fun ProfileEditScreen(navController: NavController, viewModel: ProfileViewModel)
         ) {
             Button(
                 onClick = {
+                    // Update the profile with the new data
                     viewModel.updateProfile(context, name, age, weight, contraception, imageUri)
+                    // Navigate back to the previous screen (ProfileScreen)
                     navController.navigateUp()
                 },
                 colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF534B62))
@@ -158,6 +163,7 @@ fun ProfileEditScreen(navController: NavController, viewModel: ProfileViewModel)
             }
         }
 
+        // Confirmation dialog for deleting the profile
         if (showDialog) {
             AlertDialog(
                 onDismissRequest = { showDialog = false },
@@ -165,6 +171,7 @@ fun ProfileEditScreen(navController: NavController, viewModel: ProfileViewModel)
                 text = { Text("Are you sure you want to delete this profile?") },
                 confirmButton = {
                     Button(
+                        // Delete the profile and navigate to the profile screen
                         onClick = {
                             viewModel.deleteProfile()
                             navController.navigate("profile") {
@@ -177,6 +184,7 @@ fun ProfileEditScreen(navController: NavController, viewModel: ProfileViewModel)
                     }
                 },
                 dismissButton = {
+                    // Close the dialog and don't delete the profile details
                     Button(
                         onClick = { showDialog = false },
                         colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF534B62))
@@ -219,6 +227,7 @@ fun CustomTextField(
                     .fillMaxWidth()
                     .padding(end = 24.dp)
             )
+            // Suffix text ("kg") if provided
             suffix?.let {
                 Text(
                     text = it,

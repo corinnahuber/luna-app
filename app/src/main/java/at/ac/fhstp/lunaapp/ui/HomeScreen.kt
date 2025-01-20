@@ -77,12 +77,21 @@ fun HomeScreen() {
                     Column(
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
+                        Text(
+                            text = "Today's Moon Phase",
+                            fontSize = 20.sp,
+                            color = Color.White,
+                            style = TextStyle(fontFamily = customFont)
+                        )
+
+                        Spacer(modifier = Modifier.height(30.dp))
+
                         Image(
                             painter = painterResource(id = moonPhaseImageRes),
                             contentDescription = null,
-                            modifier = Modifier.size(200.dp) // Increased size
+                            modifier = Modifier.size(200.dp) // increase image size
                         )
-                        Spacer(modifier = Modifier.height(30.dp)) // Added space below the image
+                        Spacer(modifier = Modifier.height(30.dp))
                         Text(
                             text = "$currentDate, $moonPhase",
                             fontSize = 20.sp,
