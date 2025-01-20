@@ -1,6 +1,7 @@
 package at.ac.fhstp.lunaapp.ui
 
 import android.content.Context
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -11,6 +12,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
@@ -79,7 +81,7 @@ fun InsightsScreen(context: Context, viewModel: CycleViewModel = viewModel(facto
         Row(modifier = Modifier.fillMaxWidth()) {
             Spacer(modifier = Modifier.width(40.dp))
             Text(
-                text = "Start: ${lastCycleEndDate?.format(dateFormatter) ?: "Sorry, we don't have enough data yet"}",
+                text = "Start: ${lastCycleEndDate?.format(dateFormatter) ?: "None"}",
                 color = Color.Black,
                 fontSize = 16.sp,
                 style = TextStyle(fontFamily = customFont2),
@@ -90,7 +92,7 @@ fun InsightsScreen(context: Context, viewModel: CycleViewModel = viewModel(facto
         Row(modifier = Modifier.fillMaxWidth()) {
             Spacer(modifier = Modifier.width(40.dp))
             Text(
-                text = "End: ${lastCycleEndDate?.plusDays(averageCycleLength.toLong())?.format(dateFormatter) ?: "Sorry, we don't have enough data yet"}",
+                text = "End: ${lastCycleEndDate?.plusDays(averageCycleLength.toLong())?.format(dateFormatter) ?: "None"}",
                 color = Color.Black,
                 fontSize = 16.sp,
                 style = TextStyle(fontFamily = customFont2),
@@ -119,7 +121,7 @@ fun InsightsScreen(context: Context, viewModel: CycleViewModel = viewModel(facto
         Row(modifier = Modifier.fillMaxWidth()) {
             Spacer(modifier = Modifier.width(40.dp))
             Text(
-                text = "Start: ${nextCycleStart?.format(dateFormatter) ?: "Sorry, we don't have enough data yet"}",
+                text = "Start: ${nextCycleStart?.format(dateFormatter) ?: "None"}",
                 color = Color.Black,
                 fontSize = 16.sp,
                 style = TextStyle(fontFamily = customFont2),
@@ -130,7 +132,7 @@ fun InsightsScreen(context: Context, viewModel: CycleViewModel = viewModel(facto
         Row(modifier = Modifier.fillMaxWidth()) {
             Spacer(modifier = Modifier.width(40.dp))
             Text(
-                text = "End: ${nextCycleStart?.plusDays(averageCycleLength.toLong())?.format(dateFormatter) ?: "Sorry, we don't have enough data yet"}",
+                text = "End: ${nextCycleStart?.plusDays(averageCycleLength.toLong())?.format(dateFormatter) ?: "None"}",
                 color = Color.Black,
                 fontSize = 16.sp,
                 style = TextStyle(fontFamily = customFont2),
@@ -159,11 +161,28 @@ fun InsightsScreen(context: Context, viewModel: CycleViewModel = viewModel(facto
         Row(modifier = Modifier.fillMaxWidth()) {
             Spacer(modifier = Modifier.width(40.dp))
             Text(
-                text = if (averageCycleLength > 0) "$averageCycleLength days" else "Sorry, we don't have enough data yet",
+                text = if (averageCycleLength > 0) "$averageCycleLength days" else "None",
                 color = Color.Black,
                 fontSize = 16.sp,
                 style = TextStyle(fontFamily = customFont2),
                 textAlign = TextAlign.Start
+            )
+        }
+
+        if (averageCycleLength == 0) {
+            Spacer(modifier = Modifier.height(50.dp))
+            Text(
+                text = "Disclaimer: We currently do not have enough data, but keep using the app so we can learn more about your cycle :)",
+                color = Color.Black,
+                fontSize = 18.sp,
+                style = TextStyle(fontFamily = customFont2),
+                textAlign = TextAlign.Center
+            )
+            Spacer(modifier = Modifier.height(10.dp))
+            Image(
+                painter = painterResource(id = R.drawable.baseline_favorite_24),
+                contentDescription = null,
+                modifier = Modifier.size(24.dp)
             )
         }
     }

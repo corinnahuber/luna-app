@@ -24,6 +24,7 @@ import at.ac.fhstp.lunaapp.R
 
 @Composable
 fun ProfileScreen(navController: NavController, viewModel: ProfileViewModel) {
+    // Collect the profile state from the ViewModel
     val profile by viewModel.profile.collectAsState()
     val context = LocalContext.current
 
@@ -54,6 +55,7 @@ fun ProfileScreen(navController: NavController, viewModel: ProfileViewModel) {
 
         Spacer(modifier = Modifier.height(40.dp))
 
+        // Profile image container
         Box(
             modifier = Modifier
                 .size(150.dp)
@@ -76,6 +78,7 @@ fun ProfileScreen(navController: NavController, viewModel: ProfileViewModel) {
 
         Spacer(modifier = Modifier.height(60.dp))
 
+        // Display profile details
         Text(text = "Name", fontSize = 18.sp, style = TextStyle(fontFamily = customFont2), fontWeight = FontWeight.Bold)
         Text(text = profile?.name ?: "Your Name", fontSize = 18.sp, style = TextStyle(fontFamily = customFont2))
         Spacer(modifier = Modifier.height(20.dp))
@@ -90,6 +93,7 @@ fun ProfileScreen(navController: NavController, viewModel: ProfileViewModel) {
 
         Spacer(modifier = Modifier.height(60.dp))
 
+        // Button to navigate to the profile edit screen
         Button(
             onClick = { navController.navigate("profile_edit") },
             colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF534B62))

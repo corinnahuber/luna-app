@@ -32,16 +32,19 @@ import java.time.format.DateTimeFormatter
 
 @Composable
 fun LunaApp(cycleViewModel: CycleViewModel, profileViewModel: ProfileViewModel) {
+    // Create a NavController to manage navigation within the app
     val navController = rememberNavController()
     val navBackStackEntry = navController.currentBackStackEntryAsState()
     val coroutineScope = rememberCoroutineScope()
     val currentRoute = navBackStackEntry.value?.destination?.route
 
+    // Get the application context and initialize the CycleRepository
     val context = LocalContext.current
     val cycleDao = CycleDatabase.getDatabase(context).cycleDao()
     val cycleRepository = CycleRepository(cycleDao)
 
     Box(modifier = Modifier.fillMaxSize()) {
+        // Display different backgrounds/content based on the current route
         when (currentRoute) {
             "home" -> Image(
                 painter = painterResource(id = R.drawable.background02),
@@ -98,6 +101,7 @@ fun LunaApp(cycleViewModel: CycleViewModel, profileViewModel: ProfileViewModel) 
             }
         }
 
+        // Scaffold to provide a consistent layout structure throughout the app / Bottom Navigation Bar
         Scaffold(
             containerColor = Color.Transparent,
             bottomBar = {
@@ -184,6 +188,7 @@ fun LunaApp(cycleViewModel: CycleViewModel, profileViewModel: ProfileViewModel) 
                         )
                         Spacer(modifier = Modifier.weight(0.05f, true))
                     }
+                    // This is the button to add a new cycle entry
                     FloatingActionButton(
                         onClick = { navController.navigate("add_cycle/${LocalDate.now().format(
                             DateTimeFormatter.ISO_DATE)}") },
@@ -205,6 +210,7 @@ fun LunaApp(cycleViewModel: CycleViewModel, profileViewModel: ProfileViewModel) 
                 }
             }
         ) { innerPadding ->
+            // Navigation host to manage different screens
             NavHost(
                 navController = navController,
                 startDestination = "home",

@@ -29,11 +29,15 @@ import java.time.format.DateTimeFormatter
 
 @Composable
 fun SingleCycleEntryScreen(cycleRepository: CycleRepository, cycleId: Int, navController: NavController) {
+    // Get the ViewModel instance
     val viewModel: CycleViewModel = viewModel(factory = CycleViewModelFactory(cycleRepository))
+    // Collect the cycle data as state
     val cycle by viewModel.getCycleById(cycleId).collectAsState(initial = null)
+    // State to control the visibility of the delete confirmation dialog
     var showDialog by remember { mutableStateOf(false) }
 
     cycle?.let { cycleData ->
+        // Parse and format the cycle date
         val parsedDate = LocalDate.parse(cycleData.date)
         val formattedDate = parsedDate.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))
 
@@ -169,6 +173,7 @@ fun SingleCycleEntryScreen(cycleRepository: CycleRepository, cycleId: Int, navCo
                         }
                         Spacer(modifier = Modifier.height(8.dp))
                         Row {
+                            // Display flow intensity as icons / drops filled or outlined
                             (1..5).forEach { index ->
                                 Icon(
                                     painter = painterResource(
@@ -213,11 +218,13 @@ fun SingleCycleEntryScreen(cycleRepository: CycleRepository, cycleId: Int, navCo
                 }
             }
             if (showDialog) {
+                // Show delete confirmation dialog
                 AlertDialog(
                     onDismissRequest = { showDialog = false },
                     title = { Text("Delete Entry") },
                     text = { Text("Are you sure you want to delete this entry?") },
                     confirmButton = {
+                        // Delete the cycle entry and navigate back to the calendar
                         Button(
                             onClick = {
                                 viewModel.deleteById(cycleId)
@@ -231,6 +238,7 @@ fun SingleCycleEntryScreen(cycleRepository: CycleRepository, cycleId: Int, navCo
                         }
                     },
                     dismissButton = {
+                        // Dismiss the dialog
                         Button(
                             onClick = { showDialog = false },
                             colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF534B62))

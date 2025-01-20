@@ -52,6 +52,7 @@ fun CycleEditScreen(cycleRepository: CycleRepository, cycleId: Int, navControlle
     val customFont = FontFamily(Font(R.font.font01, FontWeight.Normal))
     val customFont2 = FontFamily(Font(R.font.font06, FontWeight.Normal))
 
+    // Effect to initialize state variables when cycle data is available
     LaunchedEffect(cycle) {
         cycle?.let { cycleData ->
             selectedSymptoms = cycleData.symptoms?.split(", ") ?: listOf()
@@ -60,6 +61,7 @@ fun CycleEditScreen(cycleRepository: CycleRepository, cycleId: Int, navControlle
         }
     }
 
+    // If cycle data is available, display the edit screen
     cycle?.let { cycleData ->
         Column(
             modifier = Modifier
@@ -129,7 +131,7 @@ fun CycleEditScreen(cycleRepository: CycleRepository, cycleId: Int, navControlle
                             DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
                                 Box(
                                     modifier = Modifier
-                                        .height(250.dp) // Set fixed height
+                                        .height(250.dp) // Set fixed height of dropdown
                                         .verticalScroll(rememberScrollState())
                                 ) {
                                     Column {
@@ -277,12 +279,15 @@ fun CycleEditScreen(cycleRepository: CycleRepository, cycleId: Int, navControlle
             // Save Button
             Button(
                 onClick = {
+                    // Create an updated cycle entity with the new data
                     val updatedCycle = cycleData.copy(
                         symptoms = selectedSymptoms.joinToString(", "),
                         basalTemperature = basalTemperature.toFloatOrNull(),
                         flowIntensity = flowIntensity.takeIf { it > 0 }
                     )
+                    // Update the cycle in the ViewModel
                     viewModel.update(updatedCycle)
+                    // Navigate back to the previous screen
                     navController.popBackStack()
                 },
                 colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFC1B0D9))

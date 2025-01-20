@@ -27,6 +27,7 @@ import java.time.DayOfWeek
 
 @Composable
 fun CalendarScreen(viewModel: CycleViewModel, navController: NavController) {
+    // Collect the list of all cycles from the ViewModel
     val allCycles by viewModel.allCycles.collectAsState(initial = emptyList())
 
     // Load the custom font
@@ -55,6 +56,7 @@ fun CalendarScreen(viewModel: CycleViewModel, navController: NavController) {
 
         Spacer(modifier = Modifier.height(16.dp))
 
+        // Main content box with the calendar
         Box(
             modifier = Modifier
                 .fillMaxSize(),
@@ -68,19 +70,24 @@ fun CalendarScreen(viewModel: CycleViewModel, navController: NavController) {
                     .padding(8.dp),
                 contentAlignment = Alignment.Center
             ) {
+                // Remember the state of the calendar
                 val calendarState = rememberCalendarState()
                 Calendar(
                     calendarState = calendarState,
                     modifier = Modifier.wrapContentSize(),
                     firstDayOfWeek = DayOfWeek.MONDAY,
                     dayContent = { day ->
+                        // Check if the day is in the current month
                         val isCurrentMonth = day.date.month == calendarState.monthState.currentMonth.month
+                        // Find the cycle for the current day
                         val cycle = allCycles.find { it.date == day.date.toString() }
+                        // Determine the background color based on the cycle's flow intensity
                         val backgroundColor = when {
                             cycle?.flowIntensity != null -> Color(0xFFC1B0D9)
                             cycle != null -> Color(0xFFF2EDFF)
                             else -> Color.Transparent
                         }
+                        // Box representing a day in the calendar
                         Box(
                             modifier = Modifier
                                 .aspectRatio(1f)
@@ -89,8 +96,10 @@ fun CalendarScreen(viewModel: CycleViewModel, navController: NavController) {
                                 .background(backgroundColor, CircleShape)
                                 .clickable {
                                     if (cycle != null) {
+                                        // Navigate to the single cycle entry screen if a cycle exists
                                         navController.navigate("single_cycle_entry/${cycle.id}")
                                     } else {
+                                        // Navigate to the add cycle screen if no cycle exists
                                         navController.navigate("add_cycle/${day.date}")
                                     }
                                 },
