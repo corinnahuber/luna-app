@@ -20,6 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
@@ -27,6 +28,7 @@ import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
@@ -44,6 +46,8 @@ fun ProfileEditScreen(navController: NavController, viewModel: ProfileViewModel)
     var contraception by remember { mutableStateOf(profile?.contraception ?: "") }
     var imageUri by remember { mutableStateOf<Uri?>(profile?.imageUri?.let { Uri.parse(it) }) }
     val context = LocalContext.current
+    val configuration = LocalConfiguration.current
+    val screenHeight = configuration.screenHeightDp.dp
     var showDialog by remember { mutableStateOf(false) }
 
     // Launcher for picking an image from the gallery
@@ -67,23 +71,23 @@ fun ProfileEditScreen(navController: NavController, viewModel: ProfileViewModel)
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(60.dp)
+                .height(if (screenHeight < 800.dp) 50.dp else 60.dp)
                 .background(Color(0xFF534B62), RoundedCornerShape(16.dp)),
             contentAlignment = Alignment.Center
         ) {
             Text(
                 text = "Edit Profile",
                 color = Color.White,
-                fontSize = 24.sp,
+                fontSize = if (screenHeight < 800.dp) 20.sp else 24.sp,
                 style = TextStyle(fontFamily = customFont)
             )
         }
 
-        Spacer(modifier = Modifier.height(40.dp))
+        Spacer(modifier = Modifier.height(if (screenHeight < 800.dp) 30.dp else 40.dp))
 
         Box(
             modifier = Modifier
-                .size(150.dp)
+                .size(if (screenHeight < 800.dp) 120.dp else 150.dp)
                 .background(Color(0xFF534B62), CircleShape)
                 .clickable {
                     imagePickerLauncher.launch("image/*")
@@ -95,46 +99,50 @@ fun ProfileEditScreen(navController: NavController, viewModel: ProfileViewModel)
                     painter = rememberAsyncImagePainter(it),
                     contentDescription = null,
                     modifier = Modifier
-                        .size(150.dp)
+                        .size(if (screenHeight < 800.dp) 120.dp else 150.dp)
                         .clip(CircleShape)
                 )
-                Text("Edit", color = Color.White, fontSize = 18.sp, style = TextStyle(fontFamily = customFont2), fontWeight = FontWeight.Bold)
+                Text("Edit", color = Color.White, fontSize = if (screenHeight < 800.dp) 16.sp else 18.sp, style = TextStyle(fontFamily = customFont2), fontWeight = FontWeight.Bold)
             } ?: run {
-                Text("Edit", color = Color.White, fontSize = 18.sp, style = TextStyle(fontFamily = customFont2), fontWeight = FontWeight.Bold)
+                Text("Edit", color = Color.White, fontSize = if (screenHeight < 800.dp) 16.sp else 18.sp, style = TextStyle(fontFamily = customFont2), fontWeight = FontWeight.Bold)
             }
         }
 
-        Spacer(modifier = Modifier.height(60.dp))
+        Spacer(modifier = Modifier.height(if (screenHeight < 800.dp) 25.dp else 60.dp))
 
         // Custom text fields for entering the profile details
         CustomTextField(
             value = name,
             onValueChange = { name = it },
-            label = "Name"
+            label = "Name",
+            screenHeight = screenHeight
         )
-        Spacer(modifier = Modifier.height(14.dp))
+        Spacer(modifier = Modifier.height(if (screenHeight < 800.dp) 10.dp else 14.dp))
         CustomTextField(
             value = age,
             onValueChange = { age = it },
             label = "Age",
-            keyboardType = KeyboardType.Number
+            keyboardType = KeyboardType.Number,
+            screenHeight = screenHeight
         )
-        Spacer(modifier = Modifier.height(14.dp))
+        Spacer(modifier = Modifier.height(if (screenHeight < 800.dp) 10.dp else 14.dp))
         CustomTextField(
             value = weight,
             onValueChange = { weight = it.replace(",", ".") },
             label = "Weight",
             keyboardType = KeyboardType.Number,
-            suffix = "kg"
+            suffix = "kg",
+            screenHeight = screenHeight
         )
-        Spacer(modifier = Modifier.height(14.dp))
+        Spacer(modifier = Modifier.height(if (screenHeight < 800.dp) 10.dp else 14.dp))
         CustomTextField(
             value = contraception,
             onValueChange = { contraception = it },
-            label = "Contraception"
+            label = "Contraception",
+            screenHeight = screenHeight
         )
 
-        Spacer(modifier = Modifier.height(30.dp))
+        Spacer(modifier = Modifier.height(if (screenHeight < 800.dp) 20.dp else 30.dp))
 
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -149,7 +157,7 @@ fun ProfileEditScreen(navController: NavController, viewModel: ProfileViewModel)
                 },
                 colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF534B62))
             ) {
-                Text("Save", color = Color.White, fontSize = 18.sp, style = TextStyle(fontFamily = customFont))
+                Text("Save", color = Color.White, fontSize = if (screenHeight < 800.dp) 16.sp else 18.sp, style = TextStyle(fontFamily = customFont))
             }
 
             Spacer(modifier = Modifier.width(8.dp))
@@ -205,6 +213,7 @@ fun CustomTextField(
     value: String,
     onValueChange: (String) -> Unit,
     label: String,
+    screenHeight: Dp,
     keyboardType: KeyboardType = KeyboardType.Text,
     suffix: String? = null
 ) {
@@ -212,7 +221,7 @@ fun CustomTextField(
     val customFont2 = FontFamily(Font(R.font.font06, FontWeight.Normal))
 
     Column {
-        Text(text = label, fontSize = 16.sp, style = TextStyle(fontFamily = customFont2), fontWeight = FontWeight.Bold)
+        Text(text = label, fontSize = if (screenHeight < 800.dp) 14.sp else 16.sp, style = TextStyle(fontFamily = customFont2), fontWeight = FontWeight.Bold)
         Spacer(modifier = Modifier.height(4.dp))
         Box(
             modifier = Modifier
@@ -223,7 +232,7 @@ fun CustomTextField(
             BasicTextField(
                 value = value,
                 onValueChange = onValueChange,
-                textStyle = TextStyle(color = Color.Black, fontSize = 16.sp),
+                textStyle = TextStyle(color = Color.Black, fontSize = if (screenHeight < 800.dp) 14.sp else 16.sp),
                 cursorBrush = SolidColor(Color.Black),
                 keyboardOptions = KeyboardOptions(keyboardType = keyboardType),
                 modifier = Modifier
@@ -234,7 +243,7 @@ fun CustomTextField(
             suffix?.let {
                 Text(
                     text = it,
-                    fontSize = 16.sp,
+                    fontSize = if (screenHeight < 800.dp) 14.sp else 16.sp,
                     fontWeight = FontWeight.Bold,
                     style = TextStyle(fontFamily = customFont2),
                     modifier = Modifier

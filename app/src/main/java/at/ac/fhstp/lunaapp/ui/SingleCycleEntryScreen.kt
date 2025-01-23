@@ -11,6 +11,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
@@ -36,6 +37,9 @@ fun SingleCycleEntryScreen(cycleRepository: CycleRepository, cycleId: Int, navCo
     // State to control the visibility of the delete confirmation dialog
     var showDialog by remember { mutableStateOf(false) }
 
+    val configuration = LocalConfiguration.current
+    val screenHeight = configuration.screenHeightDp.dp
+
     cycle?.let { cycleData ->
         // Parse and format the cycle date
         val parsedDate = LocalDate.parse(cycleData.date)
@@ -54,25 +58,25 @@ fun SingleCycleEntryScreen(cycleRepository: CycleRepository, cycleId: Int, navCo
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(60.dp)
+                    .height(if (screenHeight < 800.dp) 50.dp else 60.dp)
                     .background(Color(0xFF534B62), RoundedCornerShape(16.dp)),
                 contentAlignment = Alignment.Center
             ) {
                 Text(
                     text = formattedDate,
                     color = Color.White,
-                    fontSize = 24.sp,
+                    fontSize = if (screenHeight < 800.dp) 20.sp else 26.sp,
                     style = TextStyle(fontFamily = customFont)
                 )
             }
 
-            Spacer(modifier = Modifier.height(40.dp))
+            Spacer(modifier = Modifier.height(if (screenHeight < 800.dp) 30.dp else 40.dp))
 
             // White Box wrapping Symptoms, Temperature, and Flow
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(500.dp)
+                    .height(if (screenHeight < 800.dp) 400.dp else 500.dp)
                     .background(Color.White, RoundedCornerShape(16.dp))
                     .padding(16.dp),
                 contentAlignment = Alignment.Center
@@ -90,15 +94,15 @@ fun SingleCycleEntryScreen(cycleRepository: CycleRepository, cycleId: Int, navCo
                         Box(
                             modifier = Modifier
                                 .width(300.dp)
-                                .height(55.dp)
+                                .height(if (screenHeight < 800.dp) 50.dp else 55.dp)
                                 .background(Color(0xFFC1B0D9), RoundedCornerShape(16.dp))
                                 .padding(8.dp),
                             contentAlignment = Alignment.Center
                         ) {
-                            Text("My Symptoms are...", color = Color.Black, fontSize = 18.sp, style = TextStyle(fontFamily = customFont2))
+                            Text("My Symptoms are...", color = Color.Black, fontSize = if (screenHeight < 800.dp) 16.sp else 18.sp, style = TextStyle(fontFamily = customFont2))
                         }
 
-                        Spacer(modifier = Modifier.height(8.dp))
+                        Spacer(modifier = Modifier.height(if (screenHeight < 800.dp) 6.dp else 8.dp))
 
                         Box(
                             modifier = Modifier
@@ -112,15 +116,16 @@ fun SingleCycleEntryScreen(cycleRepository: CycleRepository, cycleId: Int, navCo
                                                 modifier = Modifier
                                                     .padding(4.dp)
                                                     .background(Color(0xFFF2EDFF), RoundedCornerShape(20.dp))
-                                                    .width(100.dp)
-                                                    .height(40.dp)
+                                                    .width(if (screenHeight < 800.dp) 80.dp else 100.dp)
+                                                    .height(if (screenHeight < 800.dp) 30.dp else 40.dp)
                                                     .padding(8.dp),
                                                 contentAlignment = Alignment.Center
                                             ) {
                                                 Text(
                                                     text = symptom,
                                                     maxLines = 1,
-                                                    overflow = TextOverflow.Ellipsis
+                                                    overflow = TextOverflow.Ellipsis,
+                                                    fontSize = if (screenHeight < 800.dp) 12.sp else 14.sp
                                                 )
                                             }
                                         }
@@ -129,49 +134,49 @@ fun SingleCycleEntryScreen(cycleRepository: CycleRepository, cycleId: Int, navCo
                             }
                         }
 
-                        Spacer(modifier = Modifier.height(60.dp))
+                        Spacer(modifier = Modifier.height(if (screenHeight < 800.dp) 40.dp else 60.dp))
 
                         // Basal Temperature Display
                         Box(
                             modifier = Modifier
                                 .width(300.dp)
-                                .height(55.dp)
+                                .height(if (screenHeight < 800.dp) 50.dp else 55.dp)
                                 .background(Color(0xFFC1B0D9), RoundedCornerShape(16.dp))
                                 .padding(8.dp),
                             contentAlignment = Alignment.Center
                         ) {
-                            Text("My Basal Temperature is...", color = Color.Black, fontSize = 18.sp, style = TextStyle(fontFamily = customFont2))
+                            Text("My Basal Temperature is...", color = Color.Black, fontSize = if (screenHeight < 800.dp) 16.sp else 18.sp, style = TextStyle(fontFamily = customFont2))
                         }
-                        Spacer(modifier = Modifier.height(8.dp))
+                        Spacer(modifier = Modifier.height(if (screenHeight < 800.dp) 6.dp else 8.dp))
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Text(
                                 text = cycleData.basalTemperature?.toString() ?: "",
-                                fontSize = 20.sp,
+                                fontSize = if (screenHeight < 800.dp) 18.sp else 20.sp,
                                 modifier = Modifier
                                     .background(Color.White, RoundedCornerShape(20.dp))
                                     .border(3.dp, Color.Black, RoundedCornerShape(20.dp))
                                     .padding(8.dp)
-                                    .width(100.dp)
-                                    .height(20.dp),
+                                    .width(if (screenHeight < 800.dp) 80.dp else 100.dp)
+                                    .height(if (screenHeight < 800.dp) 18.dp else 20.dp),
                                 textAlign = TextAlign.Center
                             )
-                            Text(text = " °C", fontSize = 24.sp, fontWeight = FontWeight.Bold)
+                            Text(text = " °C", fontSize = if (screenHeight < 800.dp) 20.sp else 24.sp, fontWeight = FontWeight.Bold)
                         }
 
-                        Spacer(modifier = Modifier.height(60.dp))
+                        Spacer(modifier = Modifier.height(if (screenHeight < 800.dp) 40.dp else 60.dp))
 
                         // Flow Intensity Display
                         Box(
                             modifier = Modifier
                                 .width(300.dp)
-                                .height(55.dp)
+                                .height(if (screenHeight < 800.dp) 50.dp else 55.dp)
                                 .background(Color(0xFFC1B0D9), RoundedCornerShape(16.dp))
                                 .padding(8.dp),
                             contentAlignment = Alignment.Center
                         ) {
-                            Text("My Flow is...", color = Color.Black, fontSize = 18.sp, style = TextStyle(fontFamily = customFont2))
+                            Text("My Flow is...", color = Color.Black, fontSize = if (screenHeight < 800.dp) 16.sp else 18.sp, style = TextStyle(fontFamily = customFont2))
                         }
-                        Spacer(modifier = Modifier.height(8.dp))
+                        Spacer(modifier = Modifier.height(if (screenHeight < 800.dp) 6.dp else 8.dp))
                         Row {
                             // Display flow intensity as icons / drops filled or outlined
                             (1..5).forEach { index ->
@@ -191,7 +196,7 @@ fun SingleCycleEntryScreen(cycleRepository: CycleRepository, cycleId: Int, navCo
                 }
             }
 
-            Spacer(modifier = Modifier.height(20.dp))
+            Spacer(modifier = Modifier.height(if (screenHeight < 800.dp) 10.dp else 20.dp))
 
             // Edit and Delete Icons
             Row(
@@ -204,7 +209,7 @@ fun SingleCycleEntryScreen(cycleRepository: CycleRepository, cycleId: Int, navCo
                     Icon(
                         painter = painterResource(id = R.drawable.baseline_edit_24),
                         contentDescription = "Edit",
-                        modifier = Modifier.size(30.dp)
+                        modifier = Modifier.size(if (screenHeight < 800.dp) 24.dp else 30.dp)
                     )
                 }
                 IconButton(
@@ -213,7 +218,7 @@ fun SingleCycleEntryScreen(cycleRepository: CycleRepository, cycleId: Int, navCo
                     Icon(
                         painter = painterResource(id = R.drawable.baseline_delete_24),
                         contentDescription = "Delete",
-                        modifier = Modifier.size(30.dp)
+                        modifier = Modifier.size(if (screenHeight < 800.dp) 24.dp else 30.dp)
                     )
                 }
             }
@@ -242,7 +247,7 @@ fun SingleCycleEntryScreen(cycleRepository: CycleRepository, cycleId: Int, navCo
                         Button(
                             onClick = { showDialog = false },
                             colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF534B62))
-                            ) {
+                        ) {
                             Text("No", color = Color.White)
                         }
                     }

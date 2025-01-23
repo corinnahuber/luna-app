@@ -13,6 +13,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
@@ -61,6 +62,9 @@ fun CycleEditScreen(cycleRepository: CycleRepository, cycleId: Int, navControlle
         }
     }
 
+    val configuration = LocalConfiguration.current
+    val screenHeight = configuration.screenHeightDp.dp
+
     // If cycle data is available, display the edit screen
     cycle?.let { cycleData ->
         Column(
@@ -75,25 +79,25 @@ fun CycleEditScreen(cycleRepository: CycleRepository, cycleId: Int, navControlle
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(60.dp)
+                    .height(if (screenHeight < 800.dp) 50.dp else 60.dp)
                     .background(Color(0xFF534B62), RoundedCornerShape(16.dp)),
                 contentAlignment = Alignment.Center
             ) {
                 Text(
                     text = "Edit $formattedDate",
                     color = Color.White,
-                    fontSize = 24.sp,
+                    fontSize = if (screenHeight < 800.dp) 20.sp else 24.sp,
                     style = TextStyle(fontFamily = customFont)
                 )
             }
 
-            Spacer(modifier = Modifier.height(40.dp))
+            Spacer(modifier = Modifier.height(if (screenHeight < 800.dp) 30.dp else 40.dp))
 
             // White Box wrapping Symptoms, Temperature, and Flow
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(500.dp)
+                    .height(if (screenHeight < 800.dp) 400.dp else 500.dp)
                     .background(Color.White, RoundedCornerShape(16.dp))
                     .padding(16.dp),
                 contentAlignment = Alignment.Center
@@ -112,18 +116,18 @@ fun CycleEditScreen(cycleRepository: CycleRepository, cycleId: Int, navControlle
                         Box(
                             modifier = Modifier
                                 .width(300.dp)
-                                .height(55.dp)
+                                .height(if (screenHeight < 800.dp) 50.dp else 55.dp)
                                 .background(Color(0xFFC1B0D9), RoundedCornerShape(16.dp))
                                 .padding(8.dp),
                             contentAlignment = Alignment.Center
                         ) {
                             TextButton(onClick = { expanded = true }) {
                                 Row(verticalAlignment = Alignment.CenterVertically) {
-                                    Text("My Symptoms are...", color = Color.Black, fontSize = 18.sp, style = TextStyle(fontFamily = customFont2))
+                                    Text("My Symptoms are...", color = Color.Black, fontSize = if (screenHeight < 800.dp) 16.sp else 18.sp, style = TextStyle(fontFamily = customFont2))
                                     Icon(
                                         painter = painterResource(id = R.drawable.outline_arrow_drop_down_circle_24),
                                         contentDescription = null,
-                                        modifier = Modifier.size(24.dp),
+                                        modifier = Modifier.size(if (screenHeight < 800.dp) 20.dp else 24.dp),
                                         tint = Color.Black
                                     )
                                 }
@@ -131,7 +135,7 @@ fun CycleEditScreen(cycleRepository: CycleRepository, cycleId: Int, navControlle
                             DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
                                 Box(
                                     modifier = Modifier
-                                        .height(250.dp) // Set fixed height of dropdown
+                                        .height(if (screenHeight < 800.dp) 200.dp else 250.dp) // Set fixed height of dropdown
                                         .verticalScroll(rememberScrollState())
                                 ) {
                                     Column {
@@ -153,7 +157,7 @@ fun CycleEditScreen(cycleRepository: CycleRepository, cycleId: Int, navControlle
                                                                     selectedSymptoms + symptom
                                                                 }
                                                             },
-                                                            modifier = Modifier.size(24.dp)
+                                                            modifier = Modifier.size(if (screenHeight < 800.dp) 20.dp else 24.dp)
                                                         ) {
                                                             Icon(
                                                                 painter = painterResource(
@@ -171,7 +175,7 @@ fun CycleEditScreen(cycleRepository: CycleRepository, cycleId: Int, navControlle
                             }
                         }
 
-                        Spacer(modifier = Modifier.height(8.dp))
+                        Spacer(modifier = Modifier.height(if (screenHeight < 800.dp) 6.dp else 8.dp))
 
                         // Display selected symptoms
                         Box(
@@ -186,15 +190,16 @@ fun CycleEditScreen(cycleRepository: CycleRepository, cycleId: Int, navControlle
                                                 modifier = Modifier
                                                     .padding(4.dp)
                                                     .background(Color(0xFFF2EDFF), RoundedCornerShape(20.dp))
-                                                    .width(100.dp)
-                                                    .height(40.dp)
+                                                    .width(if (screenHeight < 800.dp) 80.dp else 100.dp)
+                                                    .height(if (screenHeight < 800.dp) 30.dp else 40.dp)
                                                     .padding(8.dp),
                                                 contentAlignment = Alignment.Center
                                             ) {
                                                 Text(
                                                     text = symptom,
                                                     maxLines = 1,
-                                                    overflow = TextOverflow.Ellipsis
+                                                    overflow = TextOverflow.Ellipsis,
+                                                    fontSize = if (screenHeight < 800.dp) 12.sp else 14.sp
                                                 )
                                             }
                                         }
@@ -203,20 +208,20 @@ fun CycleEditScreen(cycleRepository: CycleRepository, cycleId: Int, navControlle
                             }
                         }
 
-                        Spacer(modifier = Modifier.height(60.dp))
+                        Spacer(modifier = Modifier.height(if (screenHeight < 800.dp) 40.dp else 60.dp))
 
                         // Basal Temperature Input
                         Box(
                             modifier = Modifier
                                 .width(300.dp)
-                                .height(55.dp)
+                                .height(if (screenHeight < 800.dp) 50.dp else 55.dp)
                                 .background(Color(0xFFC1B0D9), RoundedCornerShape(16.dp))
                                 .padding(8.dp),
                             contentAlignment = Alignment.Center
                         ) {
-                            Text("My Basal Temperature is...", color = Color.Black, fontSize = 18.sp, style = TextStyle(fontFamily = customFont2))
+                            Text("My Basal Temperature is...", color = Color.Black, fontSize = if (screenHeight < 800.dp) 16.sp else 18.sp, style = TextStyle(fontFamily = customFont2))
                         }
-                        Spacer(modifier = Modifier.height(8.dp))
+                        Spacer(modifier = Modifier.height(if (screenHeight < 800.dp) 6.dp else 8.dp))
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             BasicTextField(
                                 value = basalTemperature,
@@ -228,32 +233,32 @@ fun CycleEditScreen(cycleRepository: CycleRepository, cycleId: Int, navControlle
                                 visualTransformation = VisualTransformation.None,
                                 textStyle = LocalTextStyle.current.copy(
                                     textAlign = TextAlign.Center,
-                                    fontSize = 20.sp
+                                    fontSize = if (screenHeight < 800.dp) 18.sp else 20.sp
                                 ),
                                 modifier = Modifier
                                     .background(Color.White, RoundedCornerShape(20.dp))
                                     .border(3.dp, Color.Black, RoundedCornerShape(20.dp))
                                     .padding(8.dp)
-                                    .width(100.dp)
-                                    .height(20.dp)
+                                    .width(if (screenHeight < 800.dp) 80.dp else 100.dp)
+                                    .height(if (screenHeight < 800.dp) 18.dp else 20.dp)
                             )
-                            Text(text = " °C", fontSize = 24.sp, fontWeight = FontWeight.Bold)
+                            Text(text = " °C", fontSize = if (screenHeight < 800.dp) 20.sp else 24.sp, fontWeight = FontWeight.Bold)
                         }
 
-                        Spacer(modifier = Modifier.height(60.dp))
+                        Spacer(modifier = Modifier.height(if (screenHeight < 800.dp) 40.dp else 60.dp))
 
                         // Flow Intensity Selector
                         Box(
                             modifier = Modifier
                                 .width(300.dp)
-                                .height(55.dp)
+                                .height(if (screenHeight < 800.dp) 50.dp else 55.dp)
                                 .background(Color(0xFFC1B0D9), RoundedCornerShape(16.dp))
                                 .padding(8.dp),
                             contentAlignment = Alignment.Center
                         ) {
-                            Text("My Flow is...", color = Color.Black, fontSize = 18.sp, style = TextStyle(fontFamily = customFont2))
+                            Text("My Flow is...", color = Color.Black, fontSize = if (screenHeight < 800.dp) 16.sp else 18.sp, style = TextStyle(fontFamily = customFont2))
                         }
-                        Spacer(modifier = Modifier.height(8.dp))
+                        Spacer(modifier = Modifier.height(if (screenHeight < 800.dp) 6.dp else 8.dp))
                         Row {
                             (1..5).forEach { index ->
                                 IconButton(
@@ -265,7 +270,8 @@ fun CycleEditScreen(cycleRepository: CycleRepository, cycleId: Int, navControlle
                                         painter = painterResource(
                                             id = if (index <= flowIntensity) R.drawable.drop01_filled else R.drawable.drop01_outline
                                         ),
-                                        contentDescription = null
+                                        contentDescription = null,
+                                        modifier = Modifier.size(if (screenHeight < 800.dp) 40.dp else 50.dp)
                                     )
                                 }
                             }
@@ -274,7 +280,7 @@ fun CycleEditScreen(cycleRepository: CycleRepository, cycleId: Int, navControlle
                 }
             }
 
-            Spacer(modifier = Modifier.height(20.dp))
+            Spacer(modifier = Modifier.height(if (screenHeight < 800.dp) 10.dp else 20.dp))
 
             // Save Button
             Button(
@@ -292,7 +298,7 @@ fun CycleEditScreen(cycleRepository: CycleRepository, cycleId: Int, navControlle
                 },
                 colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFC1B0D9))
             ) {
-                Text("Save", color = Color.Black, fontSize = 18.sp, style = TextStyle(fontFamily = customFont))
+                Text("Save", color = Color.Black, fontSize = if (screenHeight < 800.dp) 16.sp else 18.sp, style = TextStyle(fontFamily = customFont))
             }
         }
     }
