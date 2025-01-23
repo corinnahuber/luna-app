@@ -14,6 +14,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
@@ -31,6 +32,9 @@ import java.time.format.DateTimeFormatter
 
 @Composable
 fun InsightsScreen(context: Context, viewModel: CycleViewModel = viewModel(factory = CycleViewModelFactory(CycleRepository(CycleDatabase.getDatabase(context).cycleDao())))) {
+    val configuration = LocalConfiguration.current
+    val screenHeight = configuration.screenHeightDp.dp
+
     val lastCycleEndDate by viewModel.lastCycle.collectAsState(initial = null)
     val averageCycleLength by viewModel.averageCycleLength.collectAsState(initial = 0)
     val nextCycleStart by viewModel.nextCycleStart.collectAsState(initial = null)
@@ -51,19 +55,19 @@ fun InsightsScreen(context: Context, viewModel: CycleViewModel = viewModel(facto
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(60.dp)
+                .height(if (screenHeight < 800.dp) 50.dp else 60.dp)
                 .background(Color(0xFF534B62), RoundedCornerShape(16.dp)),
             contentAlignment = Alignment.Center
         ) {
             Text(
                 text = "Insights",
                 color = Color.White,
-                fontSize = 24.sp,
+                fontSize = if (screenHeight < 800.dp) 20.sp else 24.sp,
                 style = TextStyle(fontFamily = customFont)
             )
         }
 
-        Spacer(modifier = Modifier.height(40.dp))
+        Spacer(modifier = Modifier.height(if (screenHeight < 800.dp) 30.dp else 40.dp))
 
         // Last Period Section
         Box(
@@ -76,34 +80,34 @@ fun InsightsScreen(context: Context, viewModel: CycleViewModel = viewModel(facto
             Text(
                 text = "Last Cycle",
                 color = Color.Black,
-                fontSize = 18.sp,
+                fontSize = if (screenHeight < 800.dp) 16.sp else 18.sp,
                 style = TextStyle(fontFamily = customFont2)
             )
         }
-        Spacer(modifier = Modifier.height(14.dp))
+        Spacer(modifier = Modifier.height(if (screenHeight < 800.dp) 12.dp else 14.dp))
         Row(modifier = Modifier.fillMaxWidth()) {
-            Spacer(modifier = Modifier.width(40.dp))
+            Spacer(modifier = Modifier.width(if (screenHeight < 800.dp) 30.dp else 40.dp))
             Text(
                 text = "Start: ${lastCycleEndDate?.format(dateFormatter) ?: "None"}",
                 color = Color.Black,
-                fontSize = 16.sp,
+                fontSize = if (screenHeight < 800.dp) 14.sp else 16.sp,
                 style = TextStyle(fontFamily = customFont2),
                 textAlign = TextAlign.Start
             )
         }
-        Spacer(modifier = Modifier.height(10.dp))
+        Spacer(modifier = Modifier.height(if (screenHeight < 800.dp) 8.dp else 10.dp))
         Row(modifier = Modifier.fillMaxWidth()) {
-            Spacer(modifier = Modifier.width(40.dp))
+            Spacer(modifier = Modifier.width(if (screenHeight < 800.dp) 30.dp else 40.dp))
             Text(
                 text = "End: ${lastCycleEndDate?.plusDays(averageCycleLength.toLong())?.format(dateFormatter) ?: "None"}",
                 color = Color.Black,
-                fontSize = 16.sp,
+                fontSize = if (screenHeight < 800.dp) 14.sp else 16.sp,
                 style = TextStyle(fontFamily = customFont2),
                 textAlign = TextAlign.Start
             )
         }
 
-        Spacer(modifier = Modifier.height(30.dp))
+        Spacer(modifier = Modifier.height(if (screenHeight < 800.dp) 25.dp else 30.dp))
 
         // Next Period Section
         Box(
@@ -116,34 +120,34 @@ fun InsightsScreen(context: Context, viewModel: CycleViewModel = viewModel(facto
             Text(
                 text = "Next Cycle",
                 color = Color.Black,
-                fontSize = 18.sp,
+                fontSize = if (screenHeight < 800.dp) 16.sp else 18.sp,
                 style = TextStyle(fontFamily = customFont2)
             )
         }
-        Spacer(modifier = Modifier.height(14.dp))
+        Spacer(modifier = Modifier.height(if (screenHeight < 800.dp) 12.dp else 14.dp))
         Row(modifier = Modifier.fillMaxWidth()) {
-            Spacer(modifier = Modifier.width(40.dp))
+            Spacer(modifier = Modifier.width(if (screenHeight < 800.dp) 30.dp else 40.dp))
             Text(
                 text = "Start: ${nextCycleStart?.format(dateFormatter) ?: "None"}",
                 color = Color.Black,
-                fontSize = 16.sp,
+                fontSize = if (screenHeight < 800.dp) 14.sp else 16.sp,
                 style = TextStyle(fontFamily = customFont2),
                 textAlign = TextAlign.Start
             )
         }
-        Spacer(modifier = Modifier.height(10.dp))
+        Spacer(modifier = Modifier.height(if (screenHeight < 800.dp) 8.dp else 10.dp))
         Row(modifier = Modifier.fillMaxWidth()) {
-            Spacer(modifier = Modifier.width(40.dp))
+            Spacer(modifier = Modifier.width(if (screenHeight < 800.dp) 30.dp else 40.dp))
             Text(
                 text = "End: ${nextCycleStart?.plusDays(averageCycleLength.toLong())?.format(dateFormatter) ?: "None"}",
                 color = Color.Black,
-                fontSize = 16.sp,
+                fontSize = if (screenHeight < 800.dp) 14.sp else 16.sp,
                 style = TextStyle(fontFamily = customFont2),
                 textAlign = TextAlign.Start
             )
         }
 
-        Spacer(modifier = Modifier.height(30.dp))
+        Spacer(modifier = Modifier.height(if (screenHeight < 800.dp) 25.dp else 30.dp))
 
         // Average Cycle Length Section
         Box(
@@ -156,36 +160,36 @@ fun InsightsScreen(context: Context, viewModel: CycleViewModel = viewModel(facto
             Text(
                 text = "Average Cycle Length",
                 color = Color.Black,
-                fontSize = 18.sp,
+                fontSize = if (screenHeight < 800.dp) 16.sp else 18.sp,
                 style = TextStyle(fontFamily = customFont2)
             )
         }
-        Spacer(modifier = Modifier.height(14.dp))
+        Spacer(modifier = Modifier.height(if (screenHeight < 800.dp) 12.dp else 14.dp))
         Row(modifier = Modifier.fillMaxWidth()) {
-            Spacer(modifier = Modifier.width(40.dp))
+            Spacer(modifier = Modifier.width(if (screenHeight < 800.dp) 30.dp else 40.dp))
             Text(
                 text = if (averageCycleLength > 0) "$averageCycleLength days" else "None",
                 color = Color.Black,
-                fontSize = 16.sp,
+                fontSize = if (screenHeight < 800.dp) 14.sp else 16.sp,
                 style = TextStyle(fontFamily = customFont2),
                 textAlign = TextAlign.Start
             )
         }
 
         if (averageCycleLength == 0) {
-            Spacer(modifier = Modifier.height(50.dp))
+            Spacer(modifier = Modifier.height(if (screenHeight < 800.dp) 40.dp else 50.dp))
             Text(
                 text = "Disclaimer: We currently do not have enough data, but keep using the app so we can learn more about your cycle :)",
                 color = Color.Black,
-                fontSize = 18.sp,
+                fontSize = if (screenHeight < 800.dp) 16.sp else 18.sp,
                 style = TextStyle(fontFamily = customFont2),
                 textAlign = TextAlign.Center
             )
-            Spacer(modifier = Modifier.height(10.dp))
+            Spacer(modifier = Modifier.height(if (screenHeight < 800.dp) 8.dp else 10.dp))
             Image(
                 painter = painterResource(id = R.drawable.baseline_favorite_24),
                 contentDescription = null,
-                modifier = Modifier.size(24.dp)
+                modifier = Modifier.size(if (screenHeight < 800.dp) 20.dp else 24.dp)
             )
         }
     }

@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
@@ -30,6 +31,8 @@ fun ProfileScreen(navController: NavController, viewModel: ProfileViewModel) {
     // Collect the profile state from the ViewModel
     val profile by viewModel.profile.collectAsState()
     val context = LocalContext.current
+    val configuration = LocalConfiguration.current
+    val screenHeight = configuration.screenHeightDp.dp
 
     // Load the custom font
     val customFont = FontFamily(Font(R.font.font01, FontWeight.Normal))
@@ -45,24 +48,24 @@ fun ProfileScreen(navController: NavController, viewModel: ProfileViewModel) {
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(60.dp)
+                .height(if (screenHeight < 800.dp) 50.dp else 60.dp)
                 .background(Color(0xFF534B62), RoundedCornerShape(16.dp)),
             contentAlignment = Alignment.Center
         ) {
             Text(
                 text = "Profile",
                 color = Color.White,
-                fontSize = 24.sp,
+                fontSize = if (screenHeight < 800.dp) 20.sp else 24.sp,
                 style = TextStyle(fontFamily = customFont)
             )
         }
 
-        Spacer(modifier = Modifier.height(40.dp))
+        Spacer(modifier = Modifier.height(if (screenHeight < 800.dp) 30.dp else 40.dp))
 
         // Profile image container
         Box(
             modifier = Modifier
-                .size(150.dp)
+                .size(if (screenHeight < 800.dp) 120.dp else 150.dp)
                 .background(Color(0xFF534B62), CircleShape),
             contentAlignment = Alignment.Center
         ) {
@@ -72,7 +75,7 @@ fun ProfileScreen(navController: NavController, viewModel: ProfileViewModel) {
                     bitmap = bitmap.asImageBitmap(),
                     contentDescription = null,
                     modifier = Modifier
-                        .size(150.dp)
+                        .size(if (screenHeight < 800.dp) 120.dp else 150.dp)
                         .clip(CircleShape)
                 )
             } else {
@@ -80,35 +83,76 @@ fun ProfileScreen(navController: NavController, viewModel: ProfileViewModel) {
                     painter = painterResource(id = R.drawable.profile_placeholder),
                     contentDescription = null,
                     modifier = Modifier
-                        .size(150.dp)
+                        .size(if (screenHeight < 800.dp) 120.dp else 150.dp)
                         .clip(CircleShape)
                 )
             }
         }
 
-        Spacer(modifier = Modifier.height(60.dp))
+        Spacer(modifier = Modifier.height(if (screenHeight < 800.dp) 40.dp else 60.dp))
 
         // Display profile details
-        Text(text = "Name", fontSize = 18.sp, style = TextStyle(fontFamily = customFont2), fontWeight = FontWeight.Bold)
-        Text(text = profile?.name ?: "Your Name", fontSize = 18.sp, style = TextStyle(fontFamily = customFont2))
-        Spacer(modifier = Modifier.height(20.dp))
-        Text(text = "Age", fontSize = 18.sp, style = TextStyle(fontFamily = customFont2), fontWeight = FontWeight.Bold)
-        Text(text = profile?.age ?: "Your Age", fontSize = 18.sp, style = TextStyle(fontFamily = customFont2))
-        Spacer(modifier = Modifier.height(20.dp))
-        Text(text = "Weight", fontSize = 18.sp, style = TextStyle(fontFamily = customFont2), fontWeight = FontWeight.Bold)
-        Text(text = "${profile?.weight ?: "Weight in"} kg", fontSize = 18.sp, style = TextStyle(fontFamily = customFont2))
-        Spacer(modifier = Modifier.height(20.dp))
-        Text(text = "Contraception Method", fontSize = 18.sp, style = TextStyle(fontFamily = customFont2), fontWeight = FontWeight.Bold)
-        Text(text = profile?.contraception ?: "Contraception", fontSize = 18.sp, style = TextStyle(fontFamily = customFont2))
+        Text(
+            text = "Name",
+            fontSize = if (screenHeight < 800.dp) 16.sp else 18.sp,
+            style = TextStyle(fontFamily = customFont2),
+            fontWeight = FontWeight.Bold
+        )
+        Text(
+            text = profile?.name ?: "Your Name",
+            fontSize = if (screenHeight < 800.dp) 16.sp else 18.sp,
+            style = TextStyle(fontFamily = customFont2)
+        )
+        Spacer(modifier = Modifier.height(if (screenHeight < 800.dp) 15.dp else 20.dp))
+        Text(
+            text = "Age",
+            fontSize = if (screenHeight < 800.dp) 16.sp else 18.sp,
+            style = TextStyle(fontFamily = customFont2),
+            fontWeight = FontWeight.Bold
+        )
+        Text(
+            text = profile?.age ?: "Your Age",
+            fontSize = if (screenHeight < 800.dp) 16.sp else 18.sp,
+            style = TextStyle(fontFamily = customFont2)
+        )
+        Spacer(modifier = Modifier.height(if (screenHeight < 800.dp) 15.dp else 20.dp))
+        Text(
+            text = "Weight",
+            fontSize = if (screenHeight < 800.dp) 16.sp else 18.sp,
+            style = TextStyle(fontFamily = customFont2),
+            fontWeight = FontWeight.Bold
+        )
+        Text(
+            text = "${profile?.weight ?: "Weight in"} kg",
+            fontSize = if (screenHeight < 800.dp) 16.sp else 18.sp,
+            style = TextStyle(fontFamily = customFont2)
+        )
+        Spacer(modifier = Modifier.height(if (screenHeight < 800.dp) 15.dp else 20.dp))
+        Text(
+            text = "Contraception Method",
+            fontSize = if (screenHeight < 800.dp) 16.sp else 18.sp,
+            style = TextStyle(fontFamily = customFont2),
+            fontWeight = FontWeight.Bold
+        )
+        Text(
+            text = profile?.contraception ?: "Contraception",
+            fontSize = if (screenHeight < 800.dp) 16.sp else 18.sp,
+            style = TextStyle(fontFamily = customFont2)
+        )
 
-        Spacer(modifier = Modifier.height(60.dp))
+        Spacer(modifier = Modifier.height(if (screenHeight < 800.dp) 40.dp else 60.dp))
 
         // Button to navigate to the profile edit screen
         Button(
             onClick = { navController.navigate("profile_edit") },
             colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF534B62))
         ) {
-            Text("Edit Profile", color = Color.White, fontSize = 18.sp, style = TextStyle(fontFamily = customFont))
+            Text(
+                text = "Edit Profile",
+                color = Color.White,
+                fontSize = if (screenHeight < 800.dp) 16.sp else 18.sp,
+                style = TextStyle(fontFamily = customFont)
+            )
         }
     }
 }

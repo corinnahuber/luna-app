@@ -12,6 +12,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
@@ -29,6 +30,9 @@ import java.time.format.DateTimeFormatter
 
 @Composable
 fun HomeScreen() {
+    val configuration = LocalConfiguration.current
+    val screenHeight = configuration.screenHeightDp.dp
+
     val currentDate = LocalDate.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))
     var moonPhase by remember { mutableStateOf("Loading...") }
     val coroutineScope = rememberCoroutineScope()
@@ -54,23 +58,23 @@ fun HomeScreen() {
                 .fillMaxSize()
                 .verticalScroll(rememberScrollState()),
         ) {
-            Spacer(modifier = Modifier.height(70.dp))
+            Spacer(modifier = Modifier.height(if (screenHeight < 800.dp) 35.dp else 70.dp))
 
             Image(
                 painter = painterResource(id = R.drawable.ccl3_logo04),
                 contentDescription = null,
-                modifier = Modifier.fillMaxWidth(0.75f)
+                modifier = Modifier.fillMaxWidth(if (screenHeight < 800.dp) 0.7f else 0.75f)
             )
 
-            Spacer(modifier = Modifier.height(70.dp))
+            Spacer(modifier = Modifier.height(if (screenHeight < 800.dp) 35.dp else 70.dp))
 
             val moonPhaseImageRes = getMoonPhaseImageRes(moonPhase)
             if (moonPhaseImageRes != null) {
                 Box(
                     modifier = Modifier
                         .background(Color(0xFF534B62), shape = RoundedCornerShape(8.dp))
-                        .width(380.dp)
-                        .height(350.dp),
+                        .width(if (screenHeight < 800.dp) 340.dp else 380.dp)
+                        .height(if (screenHeight < 800.dp) 320.dp else 350.dp),
                     contentAlignment = Alignment.Center
                 ) {
                     Column(
@@ -78,22 +82,24 @@ fun HomeScreen() {
                     ) {
                         Text(
                             text = "Today's Moon Phase",
-                            fontSize = 20.sp,
+                            fontSize = if (screenHeight < 800.dp) 18.sp else 20.sp,
                             color = Color.White,
                             style = TextStyle(fontFamily = customFont)
                         )
 
-                        Spacer(modifier = Modifier.height(30.dp))
+                        Spacer(modifier = Modifier.height(if (screenHeight < 800.dp) 30.dp else 30.dp))
 
                         Image(
                             painter = painterResource(id = moonPhaseImageRes),
                             contentDescription = null,
-                            modifier = Modifier.size(200.dp) // increase image size
+                            modifier = Modifier.size(if (screenHeight < 800.dp) 150.dp else 200.dp)
                         )
-                        Spacer(modifier = Modifier.height(30.dp))
+
+                        Spacer(modifier = Modifier.height(if (screenHeight < 800.dp) 30.dp else 30.dp))
+
                         Text(
                             text = "$currentDate, $moonPhase",
-                            fontSize = 20.sp,
+                            fontSize = if (screenHeight < 800.dp) 18.sp else 20.sp,
                             color = Color.White,
                             style = TextStyle(fontFamily = customFont)
                         )

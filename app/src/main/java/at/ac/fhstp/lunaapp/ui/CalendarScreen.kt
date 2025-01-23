@@ -13,6 +13,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
@@ -27,6 +28,9 @@ import java.time.DayOfWeek
 
 @Composable
 fun CalendarScreen(viewModel: CycleViewModel, navController: NavController) {
+    val configuration = LocalConfiguration.current
+    val screenHeight = configuration.screenHeightDp.dp
+
     // Collect the list of all cycles from the ViewModel
     val allCycles by viewModel.allCycles.collectAsState(initial = emptyList())
 
@@ -42,19 +46,19 @@ fun CalendarScreen(viewModel: CycleViewModel, navController: NavController) {
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(60.dp)
+                .height(if (screenHeight < 800.dp) 50.dp else 60.dp)
                 .background(Color(0xFF534B62), RoundedCornerShape(16.dp)),
             contentAlignment = Alignment.Center
         ) {
             Text(
                 text = "Calendar",
                 color = Color.White,
-                fontSize = 24.sp,
+                fontSize = if (screenHeight < 800.dp) 20.sp else 24.sp,
                 style = TextStyle(fontFamily = customFont)
             )
         }
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(if (screenHeight < 800.dp) 12.dp else 16.dp))
 
         // Main content box with the calendar
         Box(
@@ -65,7 +69,7 @@ fun CalendarScreen(viewModel: CycleViewModel, navController: NavController) {
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(400.dp)
+                    .height(if (screenHeight < 800.dp) 380.dp else 400.dp)
                     .background(Color.White, RoundedCornerShape(16.dp))
                     .padding(8.dp),
                 contentAlignment = Alignment.Center
@@ -107,7 +111,7 @@ fun CalendarScreen(viewModel: CycleViewModel, navController: NavController) {
                         ) {
                             Text(
                                 text = day.date.dayOfMonth.toString(),
-                                fontSize = 16.sp,
+                                fontSize = if (screenHeight < 800.dp) 14.sp else 16.sp,
                                 color = if (isCurrentMonth) Color.Black else Color.Gray
                             )
                         }
