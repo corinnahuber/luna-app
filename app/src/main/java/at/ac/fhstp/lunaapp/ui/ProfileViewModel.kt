@@ -22,6 +22,10 @@ class ProfileViewModel(private val profileRepository: ProfileRepository) : ViewM
     val profile: StateFlow<ProfileEntity?> = _profile
 
     init {
+        refreshProfile()
+    }
+
+    private fun refreshProfile() {
         viewModelScope.launch {
             _profile.value = profileRepository.getProfile()
         }
@@ -49,7 +53,7 @@ class ProfileViewModel(private val profileRepository: ProfileRepository) : ViewM
             } else {
                 profileRepository.updateProfile(updatedProfile)
             }
-            _profile.value = updatedProfile
+            refreshProfile()
         }
     }
 
@@ -59,6 +63,7 @@ class ProfileViewModel(private val profileRepository: ProfileRepository) : ViewM
                 Log.d("ProfileViewModel", "Deleting profile: $it")
                 profileRepository.deleteProfile(it)
                 _profile.value = null
+                refreshProfile()
             }
         }
     }

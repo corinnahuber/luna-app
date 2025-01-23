@@ -84,7 +84,7 @@ fun CalendarScreen(viewModel: CycleViewModel, navController: NavController) {
                         // Determine the background color based on the cycle's flow intensity
                         val backgroundColor = when {
                             cycle?.flowIntensity != null -> Color(0xFFC1B0D9)
-                            cycle != null -> Color(0xFFF2EDFF)
+                            cycle != null -> Color(0xFFEBE3FF)
                             else -> Color.Transparent
                         }
                         // Box representing a day in the calendar

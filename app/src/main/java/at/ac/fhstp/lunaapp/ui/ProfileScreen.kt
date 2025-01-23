@@ -15,6 +15,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
@@ -65,17 +66,23 @@ fun ProfileScreen(navController: NavController, viewModel: ProfileViewModel) {
                 .background(Color(0xFF534B62), CircleShape),
             contentAlignment = Alignment.Center
         ) {
-            profile?.imageUri?.let {
-                val bitmap = viewModel.loadImageFromInternalStorage(context, "profile_image.png")
-                bitmap?.let {
-                    Image(
-                        bitmap = it.asImageBitmap(),
-                        contentDescription = null,
-                        modifier = Modifier
-                            .size(150.dp)
-                            .clip(CircleShape)
-                    )
-                }
+            val bitmap = viewModel.loadImageFromInternalStorage(context, "profile_image.png")
+            if (profile != null && bitmap != null) {
+                Image(
+                    bitmap = bitmap.asImageBitmap(),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .size(150.dp)
+                        .clip(CircleShape)
+                )
+            } else {
+                Image(
+                    painter = painterResource(id = R.drawable.profile_placeholder),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .size(150.dp)
+                        .clip(CircleShape)
+                )
             }
         }
 
