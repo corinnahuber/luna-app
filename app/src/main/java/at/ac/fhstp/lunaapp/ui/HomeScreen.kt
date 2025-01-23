@@ -1,37 +1,31 @@
 package at.ac.fhstp.lunaapp.ui
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import at.ac.fhstp.lunaapp.R
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
-import dev.jamesyox.kastro.luna.LunarEvent
-import dev.jamesyox.kastro.luna.LunarPhaseSequence
-import dev.jamesyox.kastro.luna.calculateLunarIllumination
-import kotlinx.datetime.TimeZone
-import kotlinx.datetime.toLocalDateTime
-import kotlinx.datetime.toKotlinInstant
-import kotlinx.datetime.toKotlinLocalDate
-import android.util.Log
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
-import java.time.ZoneId
-import kotlinx.coroutines.launch
-import kotlinx.datetime.daysUntil
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import at.ac.fhstp.lunaapp.R
+import dev.jamesyox.kastro.luna.calculateLunarState
+import kotlinx.coroutines.launch
+import kotlinx.datetime.toKotlinInstant
+import java.time.LocalDate
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
 
 @Composable
 fun HomeScreen() {
@@ -46,6 +40,7 @@ fun HomeScreen() {
         coroutineScope.launch {
             val date = LocalDate.now()
             moonPhase = getMoonPhaseForDate(date)
+            Log.d("HomeScreen", "Moon phase: $moonPhase")
         }
     }
 
@@ -104,6 +99,8 @@ fun HomeScreen() {
                         )
                     }
                 }
+            } else {
+                Log.d("HomeScreen", "Moon phase image resource is null for phase: $moonPhase")
             }
         }
     }
@@ -124,71 +121,20 @@ fun getMoonPhaseImageRes(phase: String): Int? {
 }
 
 fun getMoonPhaseForDate(date: LocalDate): String {
-    val timeZone = TimeZone.currentSystemDefault()
-    val startDate = date.minusDays(30).atStartOfDay(ZoneId.systemDefault()).toInstant().toKotlinInstant()
-
-    // Only request primary phases
-    val primaryPhases = listOf(
-        LunarEvent.PhaseEvent.NewMoon,
-        LunarEvent.PhaseEvent.FirstQuarter,
-        LunarEvent.PhaseEvent.FullMoon,
-        LunarEvent.PhaseEvent.LastQuarter
-    )
-
-    val lunarPhaseSequence = LunarPhaseSequence(
-        start = startDate,
-        requestedLunarPhases = primaryPhases
-    )
-
-    val targetDate = date.toKotlinLocalDate()
-    val events = lunarPhaseSequence.map {
-        it.time.toLocalDateTime(timeZone).date to it::class.java.simpleName
-    }.toList()
-    Log.d("MoonPhase", "Events: $events")
-
-    val previousEvent = events.lastOrNull { it.first <= targetDate }
-    val nextEvent = events.firstOrNull { it.first > targetDate }
-    Log.d("MoonPhase", "Previous Event: $previousEvent, Next Event: $nextEvent")
-
-    return when {
-        previousEvent == null -> "Unknown"
-        nextEvent == null -> previousEvent.second ?: "Unknown"
-        else -> {
-            val daysBetween = previousEvent.first.daysUntil(nextEvent.first)
-            val daysFromPrevious = previousEvent.first.daysUntil(targetDate)
-            Log.d("MoonPhase", "Days Between: $daysBetween, Days From Previous: $daysFromPrevious")
-
-            val phaseFraction = daysFromPrevious.toDouble() / daysBetween
-            val angle = (phaseFraction * 90.0) + when (previousEvent.second) {
-                "NewMoon" -> 0.0
-                "FirstQuarter" -> 90.0
-                "FullMoon" -> 180.0
-                "LastQuarter" -> 270.0
-                else -> 0.0
-            }
-            Log.d("MoonPhase", "Phase Fraction: $phaseFraction, Calculated Angle: $angle")
-
-            // Calculate lunar illumination
-            val illumination = date.atStartOfDay(ZoneId.systemDefault()).toInstant().toKotlinInstant().calculateLunarIllumination().fraction * 100
-            Log.d("MoonPhase", "Illumination: $illumination%")
-
-            // Map angle to the correct phase
-            val phaseName = getPhaseFromAngle(angle)
-            Log.d("MoonPhase", "Calculated angle: $angle, Moon phase: $phaseName")
-            phaseName
-        }
-    }
-}
-
-fun getPhaseFromAngle(angle: Double): String {
-    return when {
-        angle < 45.0 -> "New Moon"
-        angle < 90.0 -> "Waxing Crescent"
-        angle < 135.0 -> "First Quarter"
-        angle < 180.0 -> "Waxing Gibbous"
-        angle < 225.0 -> "Full Moon"
-        angle < 270.0 -> "Waning Gibbous"
-        angle < 315.0 -> "Last Quarter"
-        else -> "Waning Crescent"
-    }
+    val instant = date.atStartOfDay(ZoneId.systemDefault()).toInstant().toKotlinInstant()
+    val latitude = 48.2082
+    val longitude = 16.3738
+    val lunarState = instant.calculateLunarState(latitude, longitude)
+    val phase = lunarState.phase
+    return phase::class.java.simpleName
+        .replace("LunarPhase\$Intermediate\$", "")
+        .replace("LunarPhase\$Primary\$", "")
+        .replace("NewMoon", "New Moon")
+        .replace("WaxingCrescent", "Waxing Crescent")
+        .replace("FirstQuarter", "First Quarter")
+        .replace("WaxingGibbous", "Waxing Gibbous")
+        .replace("FullMoon", "Full Moon")
+        .replace("WaningGibbous", "Waning Gibbous")
+        .replace("LastQuarter", "Last Quarter")
+        .replace("WaningCrescent", "Waning Crescent")
 }
