@@ -69,6 +69,9 @@ Navigate to:
 
 ![userflow](https://github.com/user-attachments/assets/bfda1351-0d68-4b49-8d45-b0eda9bdd674)
 
+### Database Schema
+![Screenshot 2025-01-27 153615](https://github.com/user-attachments/assets/fe6a6c8b-4c6c-4ea3-9a0e-cc98b5750f97)
+
 
 ## Usability Test Plan
 
